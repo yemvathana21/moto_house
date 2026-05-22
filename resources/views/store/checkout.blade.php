@@ -53,6 +53,33 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="mt-8 pt-6 border-t border-gray-100">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ __('Payment Method') }}</h3>
+                            <div class="space-y-3">
+                                <label class="flex items-center gap-4 p-4 border-2 border-gray-200 rounded-xl cursor-pointer transition-all has-[:checked]:border-orange-500 has-[:checked]:bg-orange-50">
+                                    <input type="radio" name="payment_method" value="cod" checked class="w-5 h-5 text-orange-600 border-gray-300 focus:ring-orange-500">
+                                    <div class="flex items-center gap-3">
+                                        <svg class="w-8 h-8 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                                        <div>
+                                            <p class="font-semibold text-gray-900">{{ __('Cash on Delivery') }}</p>
+                                            <p class="text-sm text-gray-500">{{ __('Pay when you receive your order') }}</p>
+                                        </div>
+                                    </div>
+                                </label>
+                                <label class="flex items-center gap-4 p-4 border-2 border-gray-200 rounded-xl cursor-pointer transition-all has-[:checked]:border-orange-500 has-[:checked]:bg-orange-50">
+                                    <input type="radio" name="payment_method" value="khqr" class="w-5 h-5 text-orange-600 border-gray-300 focus:ring-orange-500">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 bg-[#005a9c] rounded-lg flex items-center justify-center text-white text-[10px] font-bold leading-tight text-center">ABA<br></div>
+                                        <div>
+                                            <p class="font-semibold text-gray-900">{{ __('ABA KHQR Pay') }}</p>
+                                            <p class="text-sm text-gray-500">{{ __('Scan QR code with ABA Mobile app') }}</p>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
                         <button type="submit" id="place-order-btn" class="mt-8 w-full py-3.5 bg-gray-900 text-white font-semibold rounded-xl hover:bg-orange-600 transition text-lg">
                             {{ __('Place Order') }} - ${{ number_format($total, 2) }}
                         </button>
@@ -152,7 +179,7 @@
                     document.querySelector('.text-2xl.font-extrabold.text-orange-600').textContent = '$' + newTotal.toFixed(2);
                     document.getElementById('place-order-btn').innerHTML = '{{ __("Place Order") }} - $' + newTotal.toFixed(2);
 
-                    msg.textContent = '{{ __("Coupon applied! You saved $") }}' + discount.toFixed(2);
+                    msg.textContent = '{{ __("Coupon applied! You saved") }} $' + discount.toFixed(2);
                     msg.className = 'text-xs mt-2 text-emerald-600';
                     msg.classList.remove('hidden');
                 } else {

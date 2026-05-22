@@ -7,6 +7,7 @@ use App\Http\Controllers\Store\HomeController;
 use App\Http\Controllers\Store\OrderTrackingController;
 use App\Http\Controllers\Store\PageController;
 use App\Http\Controllers\Store\ContactController;
+use App\Http\Controllers\Store\PaymentController;
 use App\Http\Controllers\Store\ShopController;
 use App\Http\Controllers\Store\WishlistController;
 use App\Livewire\Auth\Login;
@@ -31,10 +32,12 @@ Route::post('/coupon/validate', [CouponController::class, 'validate']);
 
 Route::get('/wishlist', [WishlistController::class, 'index']);
 
-Route::get('/order/track', [OrderTrackingController::class, 'index']);
+Route::get('/order/track', [OrderTrackingController::class, 'index'])->name('order.track');
 
 Route::match(['get', 'post'], '/contact', ContactController::class);
 Route::get('/page/{slug}', PageController::class);
+
+Route::get('/payment/{order}', [PaymentController::class, 'show'])->name('payment.show');
 
 Route::get('language/{locale}', [App\Http\Controllers\LanguageController::class, 'switch'])->name('language.switch');
 

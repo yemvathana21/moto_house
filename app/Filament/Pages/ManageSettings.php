@@ -3,19 +3,22 @@
 namespace App\Filament\Pages;
 
 use App\Models\Setting;
-use Filament\Forms\Components\FileUpload;
+use BackedEnum;
+use UnitEnum;
+use Filament\Pages\Page;
+use Filament\Schemas\Components\Form;
 use Filament\Schemas\Components\Section;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Schemas\Components\Form;
-use BackedEnum;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Contracts\HasForms;
+use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Notifications\Notification;
-use Filament\Pages\Page;
-use UnitEnum;
-use Filament\Support\Icons\Heroicon;
 
-class ManageSettings extends Page
+class ManageSettings extends Page implements HasForms
 {
+    use InteractsWithForms;
+
     protected static string | BackedEnum | null $navigationIcon = 'heroicon-o-cog-6-tooth';
 
     protected string $view = 'filament.pages.manage-settings';
@@ -38,6 +41,9 @@ class ManageSettings extends Page
         ]);
     }
 
+    /**
+     * Configures the form layout container using standard Filament forms engine
+     */
     public function form(Form $form): Form
     {
         return $form
@@ -79,7 +85,9 @@ class ManageSettings extends Page
 
     public function save(): void
     {
-        foreach ($this->form->getState() as $key => $value) {
+        $state = $this->form->getState();
+
+        foreach ($state as $key => $value) {
             Setting::setValue($key, $value);
         }
 
@@ -87,10 +95,5 @@ class ManageSettings extends Page
             ->title('Settings saved successfully')
             ->success()
             ->send();
-    }
-
-    protected function getHeaderActions(): array
-    {
-        return [];
     }
 }

@@ -47,6 +47,7 @@ class CheckoutController extends Controller
             'postal_code' => 'nullable|string|max:255',
             'country' => 'nullable|string|max:255',
             'coupon_code' => 'nullable|string|max:50',
+            'payment_method' => 'required|in:cod,khqr',
         ]);
 
         $customer = Customer::firstOrCreate(
@@ -109,8 +110,8 @@ class CheckoutController extends Controller
             'shipping_state' => $data['state'] ?? '',
             'shipping_postal_code' => $data['postal_code'] ?? '',
             'shipping_country' => $data['country'] ?? '',
-            'payment_method' => 'cash',
-            'payment_status' => 'pending',
+            'payment_method' => $data['payment_method'],
+            'payment_status' => $data['payment_method'] === 'khqr' ? 'pending' : 'pending',
         ]);
 
         foreach ($cart as $item) {
@@ -136,12 +137,14 @@ class CheckoutController extends Controller
         }
 
         if (class_exists(\Livewire\Livewire::class)) {
-            return redirect('/')->with('success', 'Order placed! Your order #' . $order->order_number . ' has been confirmed. Track it at /order/track?order_number=' . $order->order_number);
             // \Livewire\Livewire::dispatch('cart-updated');
-            // \Livewire\Component::dispatchTo('*', 'cart-updated'); 
-            // session()->flash('success', '');
+            session()->flash('success', 'Order placed successfully!');
         }
 
-        return redirect('/')->with('success', 'Order placed! Your order #' . $order->order_number . ' has been confirmed. Track it at /order/track?order_number=' . $order->order_number);
+        if ($data['payment_method'] === 'khqr') {
+            return redirect('/payment/' . $order->id);
+        }
+
+        return redirect('/')->with('success', __('Order placed! Your order #:number has been confirmed.', ['number' => $order->order_number]));
     }
 }

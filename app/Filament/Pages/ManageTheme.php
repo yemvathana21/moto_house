@@ -2,82 +2,56 @@
 
 namespace App\Filament\Pages;
 
+use Filament\Pages\Page;
+use Filament\Forms;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
+use Filament\Schemas\Contracts\HasSchemas;
+use Filament\Schemas\Concerns\InteractsWithSchemas;
+use Filament\Notifications\Notification;
 use App\Models\Setting;
 use BackedEnum;
-use Filament\Schemas\Components\Livewire;
-use UnitEnum;
 
-use Filament\Forms;
-use Filament\Forms\Form;
-
-use Filament\Pages\Page;
-
-use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Concerns\InteractsWithForms;
-
-use Filament\Notifications\Notification;
-use Filament\Support\Icons\Heroicon;
-
-class ManageTheme extends Page implements HasForms
+class ManageTheme extends Page implements HasSchemas
 {
-    use InteractsWithForms;
+    use InteractsWithSchemas;
 
-    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedSwatch;
-
-    protected static string | UnitEnum | null $navigationGroup = 'Settings';
-
-    protected static ?string $title = 'Theme';
+    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-paint-brush';
 
     protected string $view = 'filament.pages.manage-theme';
+
+    protected static ?string $navigationLabel = 'Manage Theme';
+
+    protected ?string $heading = 'Theme Settings';
+
     public ?array $data = [];
 
     public function mount(): void
     {
-        $this->form->fill([
-            'theme' => Setting::getValue('theme', 'light'),
-
-            'primary_color' => Setting::getValue(
-                'primary_color',
-                '#ea580c'
-            ),
-
-            'background_color' => Setting::getValue(
-                'background_color',
-                '#f3f4f6'
-            ),
-
-            'glassmorphism_blur' => Setting::getValue(
-                'glassmorphism_blur',
-                '12'
-            ),
-
-            'glassmorphism_opacity' => Setting::getValue(
-                'glassmorphism_opacity',
-                '0.15'
-            ),
-
-            'sidebar_collapsed' => filter_var(
-                Setting::getValue('sidebar_collapsed', false),
-                FILTER_VALIDATE_BOOLEAN
-            ),
+        // Load initial values from your settings queries
+        $this->schema->fill([
+            'theme' => Setting::where('key', 'theme')->value('value') ?? 'light',
+            'primary_color' => Setting::where('key', 'primary_color')->value('value') ?? '#3b82f6',
+            'background_color' => Setting::where('key', 'background_color')->value('value') ?? '#ffffff',
+            'sidebar_collapsed' => (bool) (Setting::where('key', 'sidebar_collapsed')->value('value') ?? false),
+            'glassmorphism_blur' => Setting::where('key', 'glassmorphism_blur')->value('value') ?? '10',
+            'glassmorphism_opacity' => Setting::where('key', 'glassmorphism_opacity')->value('value') ?? '0.45',
         ]);
     }
 
-    public function form(Form $form): Form
+    public function schema(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-
-                Forms\Components\Section::make('Theme Selection')
+        return $schema
+            ->components([
+                Section::make('Theme Selection')
                     ->columns(2)
                     ->schema([
-
                         Forms\Components\Select::make('theme')
                             ->options([
-                                'light' => 'Light',
-                                'dark' => 'Dark',
-                                'glassmorphism' => 'Glassmorphism',
-                                'minimal' => 'Minimal',
+                                'light' => 'Light Theme',
+                                'dark' => 'Dark Theme',
+                                'glassmorphism' => 'Glassmorphism Concept',
+                                'minimal' => 'Minimal Aspect',
                             ])
                             ->required()
                             ->live(),
@@ -88,14 +62,12 @@ class ManageTheme extends Page implements HasForms
                         Forms\Components\ColorPicker::make('background_color'),
 
                         Forms\Components\Toggle::make('sidebar_collapsed'),
-
                     ]),
 
-                Forms\Components\Section::make('Glassmorphism Settings')
-                    ->visible(fn ($get) => $get('theme') === 'glassmorphism')
+                Section::make('Glassmorphism Preferences')
+                    ->visible(fn ($get) => $get('data.theme') === 'glassmorphism')
                     ->columns(2)
                     ->schema([
-
                         Forms\Components\TextInput::make('glassmorphism_blur')
                             ->numeric()
                             ->suffix('px'),
@@ -103,22 +75,25 @@ class ManageTheme extends Page implements HasForms
                         Forms\Components\TextInput::make('glassmorphism_opacity')
                             ->numeric()
                             ->step(0.05),
-
                     ]),
-
             ])
             ->statePath('data');
     }
 
     public function save(): void
     {
-        foreach ($this->form->getState() as $key => $value) {
+        $state = $this->schema->getState();
 
-            Setting::setValue($key, $value);
+        // Persist the configurations directly into the settings database table
+        foreach ($state as $key => $value) {
+            Setting::updateOrCreate(
+                ['key' => $key],
+                ['value' => $value]
+            );
         }
 
         Notification::make()
-            ->title('Theme saved successfully')
+            ->title('Theme updated successfully!')
             ->success()
             ->send();
     }
