@@ -35,24 +35,134 @@ Laravel's predictable structure and conventions make it ideal for AI coding agen
 
 ```bash
 
-## Clone This Project
+# Moto House
+
+Moto House is a modern motorcycle accessories ecommerce website built with Laravel 13 and Filament Admin Panel.
+
+## Features
+
+- Product Management
+- Categories
+- Shopping Cart
+- Checkout System
+- Order Management
+- Wishlist
+- Coupons
+- Reviews
+- Role & Permission Management
+- Theme Customization
+- Email Notifications
+- Banner Management
+- Multi-language Support (EN / KH)
+
+---
+
+## Tech Stack
+
+- Laravel 13
+- Filament v4
+- Livewire
+- MySQL
+- Tailwind CSS
+
+---
+
+## Installation
+
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/yemvathana21/moto_house.git
 ```
 
-## Installation
+### 2. Go into project folder
 
 ```bash
 cd moto_house
+```
+
+### 3. Install dependencies
+
+```bash
 composer install
 npm install
+```
+
+### 4. Create environment file
+
+```bash
 cp .env.example .env
+```
+
+### 5. Generate application key
+
+```bash
 php artisan key:generate
+```
+
+### 6. Configure database
+
+Update your `.env` file:
+
+```env
+DB_DATABASE=motohouse
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+---
+
+### 7. Run migrations and seeders
+
+```bash
 php artisan migrate --seed
+```
+
+---
+
+### 8. Create storage link
+
+```bash
 php artisan storage:link
-npm run dev
+```
+
+---
+
+### 9. Start development server
+
+```bash
 php artisan serve
+```
+
+---
+
+### 10. Run Vite
+
+```bash
+npm run dev
+```
+
+---
+
+## Admin Panel
+
+Visit:
+
+```text
+http://127.0.0.1:8000/admin
+```
+
+---
+
+## Screenshots
+
+Add screenshots here later.
+
+---
+
+## License
+
+This project is open-source and available under the MIT license.
 ```
 
 composer require laravel/boost --dev
