@@ -136,8 +136,10 @@ class CheckoutController extends Controller
         }
 
         if (class_exists(\Livewire\Livewire::class)) {
+            return redirect('/')->with('success', 'Order placed! Your order #' . $order->order_number . ' has been confirmed. Track it at /order/track?order_number=' . $order->order_number);
             // \Livewire\Livewire::dispatch('cart-updated');
-            session()->flash('success', '');
+            // \Livewire\Component::dispatchTo('*', 'cart-updated'); 
+            // session()->flash('success', '');
         }
 
         return redirect('/')->with('success', 'Order placed! Your order #' . $order->order_number . ' has been confirmed. Track it at /order/track?order_number=' . $order->order_number);

@@ -18,7 +18,9 @@ class CouponForm
                     ->required()
                     ->maxLength(50)
                     ->unique(ignoreRecord: true)
-                    ->uppercase(),
+                    ->extraInputAttributes(['style' => 'text-transform: uppercase;'])
+                    // ->uppercase(),
+                    ->mutateDehydratedStateUsing(fn (string $state): string => strtoupper($state)),
                 Select::make('type')
                     ->options([
                         'fixed' => 'Fixed Amount',
