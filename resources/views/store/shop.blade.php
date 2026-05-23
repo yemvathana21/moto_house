@@ -5,14 +5,14 @@
                 <h1 class="text-3xl font-bold text-gray-900">{{ __('Shop') }}</h1>
                 <p class="text-sm text-gray-500 mt-1">{{ $products->total() }} {{ $products->total() === 1 ? __('product') : __('products') }} {{ __('found') }}</p>
             </div>
-            <div class="flex items-center gap-3">
-                <form method="GET" action="/shop" class="relative">
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
+                <form method="GET" action="/shop" class="relative flex-1">
                     @if (request('category_id')) <input type="hidden" name="category_id" value="{{ request('category_id') }}"> @endif
                     @if (request('brand')) <input type="hidden" name="brand" value="{{ request('brand') }}"> @endif
-                    <input type="text" name="search" placeholder="{{ __('Search products...') }}" value="{{ request('search') }}" class="w-56 pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                    <input type="text" name="search" placeholder="{{ __('Search products...') }}" value="{{ request('search') }}" class="w-full sm:w-56 pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent">
                     <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                 </form>
-                <select onchange="window.location.href=this.value" class="px-3 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-500">
+                <select onchange="window.location.href=this.value" class="w-full sm:w-auto px-3 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-500">
                     <option value="{{ request()->fullUrlWithQuery(['sort' => 'created_at', 'direction' => 'desc']) }}" {{ request('sort') === 'created_at' || !request('sort') ? 'selected' : '' }}>{{ __('Newest') }}</option>
                     <option value="{{ request()->fullUrlWithQuery(['sort' => 'price', 'direction' => 'asc']) }}" {{ request('sort') === 'price' && request('direction') === 'asc' ? 'selected' : '' }}>{{ __('Price: Low to High') }}</option>
                     <option value="{{ request()->fullUrlWithQuery(['sort' => 'price', 'direction' => 'desc']) }}" {{ request('sort') === 'price' && request('direction') === 'desc' ? 'selected' : '' }}>{{ __('Price: High to Low') }}</option>
@@ -80,7 +80,7 @@
 
             <div class="flex-1 min-w-0">
                 @if ($products->count())
-                    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+                    <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
                         @foreach ($products as $product)
                             <x-product-card :product="$product" />
                         @endforeach

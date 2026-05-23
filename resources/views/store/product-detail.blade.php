@@ -12,7 +12,7 @@
             <span class="text-gray-900 font-medium truncate">{{ $product->name }}</span>
         </nav>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12">
             <div class="relative">
                 <div class="aspect-square bg-gray-50 rounded-2xl overflow-hidden">
                     @if ($product->images && count($product->images) > 0)
@@ -32,12 +32,11 @@
                     <span class="absolute top-4 left-4 bg-red-500 text-white text-sm font-bold px-3 py-1.5 rounded-lg">{{ __('SALE') }}</span>
                 @endif
             </div>
-
             <div class="md:pt-4">
                 @if ($product->brand)
                     <p class="text-sm text-orange-600 font-semibold uppercase tracking-[0.15em] mb-2">{{ $product->brand }}</p>
                 @endif
-                <h1 class="text-3xl md:text-4xl font-bold text-gray-900 leading-tight mb-4">{{ $product->name }}</h1>
+                <h1 class="text-2xl md:text-4xl font-bold text-gray-900 leading-tight mb-3 md:mb-4">{{ $product->name }}</h1>
 
                 <div class="flex items-baseline gap-3 mb-4">
                     <span class="text-4xl font-extrabold text-orange-600">${{ number_format($product->price, 2) }}</span>
@@ -122,6 +121,34 @@
                             @if ($review->comment)
                                 <p class="text-gray-600 leading-relaxed">{{ $review->comment }}</p>
                             @endif
+
+                            @if ($review->replies->count())
+                                <div class="mt-4 space-y-3 pl-6 border-l-2 border-orange-100">
+                                    @foreach ($review->replies as $reply)
+                        <div class="bg-orange-50 rounded-xl p-4">
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="text-xs font-semibold text-orange-700 bg-orange-200 px-2 py-0.5 rounded-full">{{ $reply->customer_name }}</span>
+                                <span class="text-xs text-gray-400">{{ $reply->created_at->format('M d, Y') }}</span>
+                            </div>
+                                            <p class="text-sm text-gray-700">{{ $reply->comment }}</p>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endif
+
+                            @auth
+                                <div class="mt-3" x-data="{ open: false }">
+                                    <button @click="open = !open" class="text-xs text-orange-600 hover:text-orange-500 font-medium transition flex items-center gap-1">
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                                        {{ __('Reply') }}
+                                    </button>
+                                    <form x-show="open" @click.away="open = false" action="/shop/{{ $product->slug }}/review/{{ $review->id }}/reply" method="POST" class="mt-3 flex gap-2" x-cloak>
+                                        @csrf
+                                        <input type="text" name="comment" placeholder="{{ __('Write a reply...') }}" required minlength="5" maxlength="2000" class="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                                        <button type="submit" class="px-4 py-2 bg-gray-900 text-white text-sm font-semibold rounded-lg hover:bg-orange-600 transition shrink-0">{{ __('Send') }}</button>
+                                    </form>
+                                </div>
+                            @endauth
                         </div>
                     @endforeach
                 </div>
@@ -133,6 +160,48 @@
                     <p class="text-gray-500">{{ __('No reviews yet. Be the first to review this product!') }}</p>
                 </div>
             @endif
+        </section>
+
+        <section class="mt-12">
+            <h3 class="text-xl font-bold text-gray-900 mb-6">{{ __('Write a Review') }}</h3>
+            @auth
+                <form action="/shop/{{ $product->slug }}/review" method="POST" class="bg-white rounded-2xl border border-gray-100 p-6 md:p-8">
+                    @csrf
+                    <div class="mb-5">
+                        <label class="block text-sm font-semibold text-gray-900 mb-2">{{ __('Your Rating') }}</label>
+                        <div class="flex gap-1" x-data="{ rating: 0 }">
+                            @for ($i = 1; $i <= 5; $i++)
+                                <button type="button" @click="rating = {{ $i }}" class="p-0.5 focus:outline-none">
+                                    <svg class="w-8 h-8 transition-colors" :class="rating >= {{ $i }} ? 'text-yellow-400' : 'text-gray-200'" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                    </svg>
+                                </button>
+                            @endfor
+                            <input type="hidden" name="rating" x-model="rating" value="0">
+                        </div>
+                        @error('rating')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div class="mb-5">
+                        <label for="comment" class="block text-sm font-semibold text-gray-900 mb-2">{{ __('Your Review') }}</label>
+                        <textarea name="comment" id="comment" rows="4" class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-none" placeholder="{{ __('Share your experience with this product...') }}"></textarea>
+                        @error('comment')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <button type="submit" class="px-6 py-3 bg-gray-900 text-white font-semibold rounded-xl hover:bg-orange-600 transition text-sm">
+                        {{ __('Submit Review') }}
+                    </button>
+                </form>
+            @else
+                <div class="bg-white rounded-2xl border border-gray-100 p-8 text-center">
+                    <p class="text-gray-500">{{ __('Please sign in to write a review.') }}</p>
+                    <a href="{{ route('login') }}" class="inline-flex items-center gap-2 mt-4 px-6 py-3 bg-gray-900 text-white font-semibold rounded-xl hover:bg-orange-600 transition text-sm">
+                        {{ __('Sign In') }}
+                    </a>
+                </div>
+            @endauth
         </section>
     </div>
 </x-layouts.store>

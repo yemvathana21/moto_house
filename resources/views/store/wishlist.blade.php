@@ -3,7 +3,7 @@
         <h1 class="text-3xl font-bold text-gray-900 mb-8">{{ __('My Wishlist') }}</h1>
 
         @if ($wishlistItems->count())
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
                 @foreach ($wishlistItems as $item)
                     <div class="group bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-xl hover:border-orange-100 transition-all duration-300">
                         <a href="/shop/{{ $item->product->slug }}" class="block aspect-square bg-gray-50 relative overflow-hidden">
@@ -16,6 +16,9 @@
                                     </svg>
                                 </div>
                             @endif
+                            <div class="absolute top-3 right-3 z-10">
+                                @livewire('wishlist-button', ['productId' => $item->product->id], key('wishlist-' . $item->product->id))
+                            </div>
                         </a>
                         <div class="p-5">
                             @if ($item->product->brand)

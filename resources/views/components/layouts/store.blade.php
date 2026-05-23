@@ -11,7 +11,7 @@
     @livewireStyles
 </head>
 @livewireScripts
-<body class="bg-gray-50 text-gray-900 antialiased font-sans">
+<body class="bg-gray-50 text-gray-900 antialiased font-sans overflow-x-hidden">
     <header class="bg-white border-b border-gray-100 sticky top-0 z-50 shadow-sm" x-data="{ mobileOpen: false }">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">

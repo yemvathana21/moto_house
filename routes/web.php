@@ -19,6 +19,8 @@ Route::get('/', HomeController::class);
 Route::redirect('/about-us', '/page/about-us');
 Route::get('/shop', ShopController::class);
 Route::get('/shop/{slug}', [ShopController::class, 'show']);
+Route::post('/shop/{slug}/review', [ShopController::class, 'storeReview'])->middleware('auth');
+Route::post('/shop/{slug}/review/{review}/reply', [ShopController::class, 'storeReply'])->middleware('auth');
 
 Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
 Route::post('/cart/update/{product}', [CartController::class, 'update'])->name('cart.update');

@@ -4,17 +4,17 @@
             <div class="relative">
                 @foreach ($banners as $banner)
                     <div class="banner-slide {{ $loop->first ? 'block' : 'hidden' }}">
-                        <div class="relative h-[420px] md:h-[560px]">
+                        <div class="relative h-[300px] md:h-[560px]">
                             <img src="{{ asset('storage/' . $banner->image) }}" alt="{{ $banner->title }}" class="w-full h-full object-cover">
                             <div class="absolute inset-0 bg-gradient-to-r from-gray-950/80 via-gray-950/50 to-transparent"></div>
                             <div class="absolute inset-0 flex items-center">
                                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
                                     <div class="max-w-lg">
                                         @if ($banner->subtitle)
-                                            <p class="text-orange-400 font-semibold text-sm uppercase tracking-[0.2em] mb-3">{{ $banner->subtitle }}</p>
+                                            <p class="text-orange-400 font-semibold text-sm uppercase tracking-[0.2em] mb-2 md:mb-3">{{ $banner->subtitle }}</p>
                                         @endif
                                         @if ($banner->title)
-                                            <h1 class="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-4">{{ $banner->title }}</h1>
+                                            <h1 class="text-2xl md:text-6xl font-extrabold text-white leading-tight mb-3 md:mb-4">{{ $banner->title }}</h1>
                                         @endif
                                         @if ($banner->link)
                                             <a href="{{ $banner->link }}" class="inline-flex items-center gap-2 px-6 py-3 bg-orange-600 text-white font-semibold rounded-xl hover:bg-orange-500 transition shadow-lg shadow-orange-600/25">
@@ -61,11 +61,11 @@
             <div class="absolute inset-0 bg-gradient-to-br from-orange-600/20 via-gray-950 to-gray-950"></div>
             <div class="absolute top-20 -right-20 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl"></div>
             <div class="absolute -bottom-20 -left-20 w-80 h-80 bg-orange-500/10 rounded-full blur-3xl"></div>
-            <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-36">
+            <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-36">
                 <div class="max-w-2xl">
-                    <p class="text-orange-400 font-semibold text-sm uppercase tracking-[0.2em] mb-4">{{ __('Premium Motorcycle Gear') }}</p>
-                    <h1 class="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-6">{{ __('Gear Up for the Ride Ahead') }}</h1>
-                    <p class="text-lg text-gray-300 leading-relaxed mb-8">{{ __('Discover premium motorcycle accessories engineered for performance, safety, and style. Ride with confidence.') }}</p>
+                    <p class="text-orange-400 font-semibold text-sm uppercase tracking-[0.2em] mb-3 md:mb-4">{{ __('Premium Motorcycle Gear') }}</p>
+                    <h1 class="text-2xl sm:text-3xl md:text-6xl font-extrabold text-white leading-tight mb-4 md:mb-6">{{ __('Gear Up for the Ride Ahead') }}</h1>
+                    <p class="text-sm md:text-lg text-gray-300 leading-relaxed mb-6 md:mb-8">{{ __('Discover premium motorcycle accessories engineered for performance, safety, and style. Ride with confidence.') }}</p>
                     <div class="flex flex-wrap gap-4">
                         <a href="/shop" class="inline-flex items-center gap-2 px-6 py-3 bg-orange-600 text-white font-semibold rounded-xl hover:bg-orange-500 transition shadow-lg shadow-orange-600/25">
                             {{ __('Shop Now') }}
@@ -81,19 +81,19 @@
     @endif
 
     @if ($categories->count())
-        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-            <div class="text-center mb-12">
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20">
+            <div class="text-center mb-10 md:mb-12">
                 <p class="text-orange-600 font-semibold text-sm uppercase tracking-[0.2em] mb-2">{{ __('Categories') }}</p>
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-900">{{ __('Shop by Category') }}</h2>
+                <h2 class="text-2xl md:text-4xl font-bold text-gray-900">{{ __('Shop by Category') }}</h2>
                 <p class="text-gray-500 mt-2">{{ __('Find exactly what you need for your ride') }}</p>
             </div>
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4">
                 @foreach ($categories as $category)
-                    <a href="/shop?category_id={{ $category->id }}" class="group relative bg-white rounded-2xl border border-gray-100 p-6 text-center hover:border-orange-200 hover:shadow-xl hover:shadow-orange-500/5 transition-all duration-300">
+                    <a href="/shop?category_id={{ $category->id }}" class="group relative bg-white rounded-2xl border border-gray-100 p-4 md:p-6 text-center hover:border-orange-200 hover:shadow-xl hover:shadow-orange-500/5 transition-all duration-300">
                         @if ($category->image)
-                            <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" class="w-20 h-20 object-cover rounded-2xl mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                            <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" class="w-14 h-14 md:w-20 md:h-20 object-cover rounded-2xl mx-auto mb-3 md:mb-4 group-hover:scale-110 transition-transform duration-300">
                         @else
-                            <div class="w-20 h-20 bg-gradient-to-br from-orange-50 to-orange-100 rounded-2xl mx-auto mb-4 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                            <div class="w-14 h-14 md:w-20 md:h-20 bg-gradient-to-br from-orange-50 to-orange-100 rounded-2xl mx-auto mb-3 md:mb-4 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                                 <svg class="w-9 h-9 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
                                 </svg>
@@ -108,19 +108,19 @@
     @endif
 
     @if ($featuredProducts->count())
-        <section class="bg-gray-50 py-20">
+        <section class="bg-gray-50 py-16 md:py-20">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex items-end justify-between mb-10">
+                <div class="flex items-end justify-between mb-8 md:mb-10">
                     <div>
                         <p class="text-orange-600 font-semibold text-sm uppercase tracking-[0.2em] mb-2">{{ __('Featured') }}</p>
-                        <h2 class="text-3xl md:text-4xl font-bold text-gray-900">{{ __('Our Top Picks') }}</h2>
+                        <h2 class="text-2xl md:text-4xl font-bold text-gray-900">{{ __('Our Top Picks') }}</h2>
                     </div>
                     <a href="/shop" class="hidden sm:inline-flex items-center gap-1 text-orange-600 font-medium hover:text-orange-500 transition">
                         {{ __('View All') }}
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                     </a>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6">
                     @foreach ($featuredProducts as $product)
                         <x-product-card :product="$product" />
                     @endforeach
@@ -132,9 +132,9 @@
         </section>
     @endif
 
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="bg-white rounded-2xl border border-gray-100 p-8 text-center hover:shadow-lg hover:border-orange-100 transition-all duration-300">
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
+            <div class="bg-white rounded-2xl border border-gray-100 p-6 md:p-8 text-center hover:shadow-lg hover:border-orange-100 transition-all duration-300">
                 <div class="w-14 h-14 bg-orange-50 rounded-2xl flex items-center justify-center mx-auto mb-5">
                     <svg class="w-7 h-7 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/>
@@ -164,10 +164,10 @@
         </div>
     </section>
 
-    <section class="bg-gray-950 py-20">
+    <section class="bg-gray-950 py-16 md:py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">{{ __('Join the Moto House Community') }}</h2>
-            <p class="text-gray-400 text-lg mb-8 max-w-xl mx-auto">{{ __('Subscribe to get exclusive deals, new arrivals, and riding tips straight to your inbox.') }}</p>
+            <h2 class="text-2xl md:text-4xl font-bold text-white mb-3 md:mb-4">{{ __('Join the Moto House Community') }}</h2>
+            <p class="text-gray-400 text-sm md:text-lg mb-6 md:mb-8 max-w-xl mx-auto">{{ __('Subscribe to get exclusive deals, new arrivals, and riding tips straight to your inbox.') }}</p>
             <form class="max-w-md mx-auto flex gap-3">
                 <input type="email" placeholder="{{ __('Enter your email') }}" class="flex-1 px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent">
                 <button type="submit" class="px-6 py-3 bg-orange-600 text-white font-semibold rounded-xl hover:bg-orange-500 transition shrink-0">{{ __('Subscribe') }}</button>
