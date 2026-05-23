@@ -154,6 +154,15 @@
     "Confirm the amount and complete payment": "បញ្ជាក់ចំនួនទឹកប្រាក់ និងបញ្ចប់ការទូទាត់",
     "After payment, your order will be processed. You can track your order status below.": "បន្ទាប់ពីទូទាត់រួច ការបញ្ជាទិញរបស់អ្នកនឹងត្រូវបានដំណើរការ",
     "Bank": "ធនាគារ",
+    "My Account": "គណនីរបស់ខ្ញុំ",
+    "Total Orders": "ការបញ្ជាទិញសរុប",
+    "Order History": "ប្រវត្តិនៃការបញ្ជាទិញ",
+    "No orders yet": "មិនទាន់មានការបញ្ជាទិញនៅឡើយទេ",
+    "Start shopping to see your orders here.": "ចាប់ផ្តើមទិញទំនិញដើម្បីមើលការបញ្ជាទិញរបស់អ្នកនៅទីនេះ។",
+    "In Progress": "កំពុងដំណើរការ",
+    "You don't have any orders yet.": "អ្នកមិនទាន់មានការបញ្ជាទិញនៅឡើយទេ។",
+    "Your Orders": "ការបញ្ជាទិញរបស់អ្នក",
     "Back to Home": "ត្រឡប់ទៅទំព័រដើម",
     "Order placed! Your order #:number has been confirmed.": "ការបញ្ជាទិញ #:number ត្រូវបានបញ្ជាក់រួចរាល់!"
+    
 }

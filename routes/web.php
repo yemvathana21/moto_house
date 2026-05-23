@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Store\AccountController;
 use App\Http\Controllers\Store\CartController;
 use App\Http\Controllers\Store\CheckoutController;
 use App\Http\Controllers\Store\CouponController;
@@ -44,6 +45,10 @@ Route::get('language/{locale}', [App\Http\Controllers\LanguageController::class,
 Route::middleware('guest')->group(function () {
     Route::get('/login', Login::class)->name('login');
     Route::get('/register', Register::class)->name('register');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/my-account', [AccountController::class, 'index'])->name('account');
 });
 
 Route::post('/logout', function () {

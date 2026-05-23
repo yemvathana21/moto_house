@@ -4,25 +4,32 @@ namespace App\Http\Controllers\Store;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Models\Customer;
+use Illuminate\Support\Facades\Auth;
 
 class OrderTrackingController extends Controller
 {
     public function index()
     {
-        $orderNumber = request('order_number');
+        $user = Auth::user();
 
-        if ($orderNumber) {
-            $order = Order::with(['items', 'customer'])
-                ->where('order_number', strtoupper($orderNumber))
-                ->first();
+        $customer = Customer::where('email', $user->email)->first();
 
-            if (!$order) {
-                return back()->with('error', 'Order not found. Please check your order number.');
+        $orders = collect();
+
+
+        $order = null;
+            if (request('order_number')) {
+                $order = Order::where('order_number', request('order_number'))->first();
             }
 
-            return view('store.order-detail', compact('order'));
+        if ($customer) {
+            $orders = Order::with(['items'])
+                ->where('customer_id', $customer->id)
+                ->latest()
+                ->get();
         }
 
-        return view('store.order-tracking');
+        return view('store.order-tracking', compact('orders'));
     }
 }

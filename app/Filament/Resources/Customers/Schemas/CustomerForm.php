@@ -20,6 +20,9 @@ class CustomerForm
                         TextInput::make('name')
                             ->required()
                             ->maxLength(255),
+                        Textarea::make('id')
+                        ->required()
+                        ->maxLength(255),
                         TextInput::make('email')
                             ->required()
                             ->email()

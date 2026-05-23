@@ -30,6 +30,7 @@
                 @if (Route::has('password.request'))
                     <a href="{{ route('password.request') }}" class="text-sm text-orange-600 hover:text-orange-500 font-medium">{{ __('Forgot password?') }}</a>
                 @endif
+
             </div>
 
             <button type="submit" class="w-full py-3 bg-gray-900 text-white font-semibold rounded-xl hover:bg-orange-600 transition flex items-center justify-center gap-2" wire:loading.attr="disabled">

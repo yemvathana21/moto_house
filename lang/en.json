@@ -154,6 +154,14 @@
     "Confirm the amount and complete payment": "Confirm the amount and complete payment",
     "After payment, your order will be processed. You can track your order status below.": "After payment, your order will be processed. You can track your order status below.",
     "Bank": "Bank",
+    "My Account": "My Account",
+    "Total Orders": "Total Orders",
+    "Order History": "Order History",
+    "No orders yet": "No orders yet",
+    "Start shopping to see your orders here.": "Start shopping to see your orders here.",
+    "In Progress": "In Progress",
+    "You don't have any orders yet.": "You don't have any orders yet.",
+    "Your Orders": "Your Orders",
     "Back to Home": "Back to Home",
     "Order placed! Your order #:number has been confirmed.": "Order placed! Your order #:number has been confirmed."
 }

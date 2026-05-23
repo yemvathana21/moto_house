@@ -32,8 +32,8 @@ class ManageSettings extends Page implements HasForms
         $this->form->fill([
             'site_name' => Setting::getValue('site_name', 'Moto House'),
             'site_description' => Setting::getValue('site_description', 'Premium Motorcycle Accessories'),
-            'contact_email' => Setting::getValue('contact_email', 'hello@motohouse.com'),
-            'contact_phone' => Setting::getValue('contact_phone', '+1 234 567 890'),
+            'contact_email' => Setting::getValue('contact_email', 'yemvathana86@gmail.com'),
+            'contact_phone' => Setting::getValue('contact_phone', '+855 978 537 707'),
             'address' => Setting::getValue('address', ''),
             'currency' => Setting::getValue('currency', 'USD'),
             'tax_rate' => Setting::getValue('tax_rate', '0'),

@@ -1,5 +1,5 @@
-<x-layouts.store title="Track Order">
-    <div class="max-w-lg mx-auto px-4 py-20">
+<x-layouts.store title="{{ __('Track Order') }}">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div class="text-center mb-10">
             <div class="w-16 h-16 bg-orange-50 rounded-2xl flex items-center justify-center mx-auto mb-5">
                 <svg class="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -14,7 +14,7 @@
             <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm mb-6">{{ session('error') }}</div>
         @endif
 
-        <form action="/order/track" method="GET" class="flex gap-3">
+        <form action="/order/track" method="GET" class="flex gap-3 max-w-lg mx-auto mb-12">
             <input type="text" name="order_number" placeholder="e.g. MH-ABC123" required
                    class="flex-1 px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none text-center uppercase text-lg font-medium placeholder:text-base">
             <button type="submit" class="px-6 py-3 bg-gray-900 text-white font-semibold rounded-xl hover:bg-orange-600 transition flex items-center gap-2">
@@ -22,5 +22,46 @@
                 {{ __('Track') }}
             </button>
         </form>
+
+        @if ($orders->count())
+            <div class="border-t border-gray-100 pt-10">
+                <h2 class="text-xl font-bold text-gray-900 mb-6">{{ __('Your Orders') }}</h2>
+                <div class="space-y-4">
+                    @foreach ($orders as $order)
+                        <a href="/order/track?order_number={{ $order->order_number }}" class="block bg-white rounded-2xl border border-gray-100 p-5 hover:shadow-md hover:border-orange-100 transition-all duration-200">
+                            <div class="flex items-center justify-between mb-2">
+                                <div>
+                                    <p class="font-semibold text-gray-900">{{ __('Order') }} #{{ $order->order_number }}</p>
+                                    <p class="text-xs text-gray-400 mt-0.5">{{ $order->created_at->format('M d, Y h:i A') }}</p>
+                                </div>
+                                <span class="px-3 py-1 rounded-lg text-xs font-semibold
+                                    @switch($order->status)
+                                        @case('pending') bg-yellow-50 text-yellow-700 @break
+                                        @case('processing') bg-blue-50 text-blue-700 @break
+                                        @case('shipped') bg-purple-50 text-purple-700 @break
+                                        @case('delivered') bg-emerald-50 text-emerald-700 @break
+                                        @case('cancelled') bg-red-50 text-red-700 @break
+                                        @default bg-gray-50 text-gray-700
+                                    @endswitch
+                                ">
+                                    {{ ucfirst($order->status) }}
+                                </span>
+                            </div>
+                            <div class="flex items-center justify-between text-sm">
+                                <span class="text-gray-500">{{ $order->items->count() }} {{ __('items') }}</span>
+                                <span class="font-bold text-gray-900">${{ number_format($order->total, 2) }}</span>
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
+            </div>
+        @else
+            <div class="text-center py-10 border-t border-gray-100">
+                <p class="text-gray-500">{{ __("You don't have any orders yet.") }}</p>
+                <a href="/shop" class="inline-flex items-center gap-2 mt-4 px-6 py-3 bg-gray-900 text-white font-semibold rounded-xl hover:bg-orange-600 transition">
+                    {{ __('Start Shopping') }}
+                </a>
+            </div>
+        @endif
     </div>
 </x-layouts.store>

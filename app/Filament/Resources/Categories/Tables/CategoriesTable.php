@@ -16,9 +16,10 @@ class CategoriesTable
     {
         return $table
             ->columns([
-                ImageColumn::make('image')
-                    ->circular()
-                    ->defaultImageUrl(url('/images/no-image.svg')),
+                ImageColumn::make('image') 
+                    ->label('Images')
+                    ->disk('public')
+                    ->circular(),
                 TextColumn::make('name')
                     ->searchable()
                     ->sortable(),

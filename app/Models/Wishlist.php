@@ -7,15 +7,20 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Wishlist extends Model
 {
+    protected $table = 'wishlists';
     protected $fillable = ['customer_id', 'product_id'];
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(Product::class, 'product_id');
+    }
 
     public function customer(): BelongsTo
     {
         return $this->belongsTo(Customer::class);
     }
 
-    public function product(): BelongsTo
-    {
-        return $this->belongsTo(Product::class);
-    }
+    // public function product(): BelongsTo
+    // {
+    //     return $this->belongsTo(Product::class);
+    // }
 }

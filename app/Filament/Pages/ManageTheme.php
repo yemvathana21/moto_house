@@ -24,6 +24,11 @@ class ManageTheme extends Page implements HasSchemas
 
     protected ?string $heading = 'Theme Settings';
 
+    public static function shouldRegisterNavigation(): bool
+    {
+        return false;
+    }
+
     public ?array $data = [];
 
     public function mount(): void

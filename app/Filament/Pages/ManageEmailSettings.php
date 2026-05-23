@@ -4,21 +4,24 @@ namespace App\Filament\Pages;
 
 use App\Models\Setting;
 use BackedEnum;
+use Filament\Schemas\Schema; // <--- MAKE SURE THIS TYPE IS IMPORTED
 use Filament\Schemas\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Schemas\Components\Toggle;
-use Filament\Schemas\Components\Form;
+use Filament\Forms\Contracts\HasForms;
+use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Support\Icons\Heroicon;
 use UnitEnum;
 
-class ManageEmailSettings extends Page
+class ManageEmailSettings extends Page implements HasForms
 {
+    use InteractsWithForms;
+
     protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedEnvelope;
 
-    protected string $view = 'filament.pages.manage-settings';
+    protected string $view = 'filament.pages.manage-email-settings';
 
     protected static string | UnitEnum | null $navigationGroup = 'Settings';
 
@@ -42,10 +45,13 @@ class ManageEmailSettings extends Page
         ]);
     }
 
-    public function form(Form $form): Form
+    /**
+     * Swapped out Form arguments with Schema constraints to safely catch core components
+     */
+    public function form(Schema $form): Schema
     {
         return $form
-            ->schema([
+            ->components([ // <--- Changed ->schema() to ->components() to align with Schema structures
                 Section::make('Mail Configuration')
                     ->columns(2)
                     ->schema([
@@ -58,25 +64,32 @@ class ManageEmailSettings extends Page
                                 'sendmail' => 'Sendmail',
                                 'log' => 'Log (Development)',
                             ])
-                            ->required(),
+                            ->required()
+                            ->live(),
+                        
                         TextInput::make('mail_host')
                             ->label('SMTP Host')
-                            ->visible(fn ($get) => $get('mail_driver') === 'smtp'),
+                            ->visible(fn ($get) => $get('data.mail_driver') === 'smtp'),
+                        
                         TextInput::make('mail_port')
                             ->label('SMTP Port')
                             ->numeric()
-                            ->visible(fn ($get) => $get('mail_driver') === 'smtp'),
+                            ->visible(fn ($get) => $get('data.mail_driver') === 'smtp'),
+                        
                         TextInput::make('mail_username')
                             ->label('SMTP Username')
-                            ->visible(fn ($get) => $get('mail_driver') === 'smtp'),
+                            ->visible(fn ($get) => $get('data.mail_driver') === 'smtp'),
+                        
                         TextInput::make('mail_password')
                             ->label('SMTP Password')
                             ->password()
-                            ->visible(fn ($get) => $get('mail_driver') === 'smtp'),
+                            ->visible(fn ($get) => $get('data.mail_driver') === 'smtp'),
+                        
                         Select::make('mail_encryption')
                             ->options(['tls' => 'TLS', 'ssl' => 'SSL'])
-                            ->visible(fn ($get) => $get('mail_driver') === 'smtp'),
+                            ->visible(fn ($get) => $get('data.mail_driver') === 'smtp'),
                     ]),
+
                 Section::make('From Address')
                     ->columns(2)
                     ->schema([
@@ -86,6 +99,7 @@ class ManageEmailSettings extends Page
                         TextInput::make('mail_from_name')
                             ->label('From Name'),
                     ]),
+
                 Section::make('Notifications')
                     ->columns(2)
                     ->schema([
@@ -112,10 +126,5 @@ class ManageEmailSettings extends Page
             ->title('Email settings saved successfully')
             ->success()
             ->send();
-    }
-
-    protected function getHeaderActions(): array
-    {
-        return [];
     }
 }

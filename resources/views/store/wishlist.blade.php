@@ -35,6 +35,7 @@
                                     {{ __('Add to Cart') }}
                                 </button>
                             </form>
+                            
                         </div>
                     </div>
                 @endforeach
