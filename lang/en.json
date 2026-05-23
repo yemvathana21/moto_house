@@ -181,5 +181,13 @@
     "Reply": "Reply",
     "Write a reply...": "Write a reply...",
     "Send": "Send",
-    "Your reply has been posted.": "Your reply has been posted."
+    "Your reply has been posted.": "Your reply has been posted.",
+    "Scan the QR code or tap the button below to pay with ABA Mobile.": "Scan the QR code or tap the button below to pay with ABA Mobile.",
+    "Open ABA Mobile App": "Open ABA Mobile App",
+    "Account": "Account",
+    "Tap \"Open ABA Mobile App\" above": "Tap \"Open ABA Mobile App\" above",
+    "Or scan the QR code with ABA Mobile": "Or scan the QR code with ABA Mobile",
+    "If the button above does not open ABA, copy the payment info below:": "If the button above does not open ABA, copy the payment info below:",
+    "Copy": "Copy",
+    "Copied!": "Copied!"
 }

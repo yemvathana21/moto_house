@@ -181,5 +181,13 @@
     "Reply": "ឆ្លើយតប",
     "Write a reply...": "សរសេរការឆ្លើយតប...",
     "Send": "ផ្ញើ",
-    "Your reply has been posted.": "ការឆ្លើយតបរបស់អ្នកត្រូវបានប្រកាសរួចរាល់។"
+    "Your reply has been posted.": "ការឆ្លើយតបរបស់អ្នកត្រូវបានប្រកាសរួចរាល់។",
+    "Scan the QR code or tap the button below to pay with ABA Mobile.": "ស្កេន QR ឬចុចប៊ូតុងខាងក្រោមដើម្បីទូទាត់ជាមួយ ABA Mobile។",
+    "Open ABA Mobile App": "បើកកម្មវិធី ABA Mobile",
+    "Account": "គណនី",
+    "Tap \"Open ABA Mobile App\" above": "ចុច \"បើកកម្មវិធី ABA Mobile\" ខាងលើ",
+    "Or scan the QR code with ABA Mobile": "ឬស្កេន QR ជាមួយ ABA Mobile",
+    "If the button above does not open ABA, copy the payment info below:": "ប្រសិនបើប៊ូតុងខាងលើមិនបើក ABA សូមចម្លងព័ត៌មានទូទាត់ខាងក្រោម៖",
+    "Copy": "ចម្លង",
+    "Copied!": "បានចម្លង!"
 }

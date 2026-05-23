@@ -10,7 +10,7 @@
         "filament/filament": "^5.6",
         "laravel/framework": "^13.8",
         "laravel/tinker": "^3.0",
-        "simplesoftwareio/simple-qrcode": "^4.2",
+        "simplesoftwareio/simple-qrcode": "*",
         "spatie/laravel-permission": "^7.4"
     },
     "require-dev": {
@@ -23,11 +23,12 @@
         "phpunit/phpunit": "^12.5.12"
     },
     "autoload": {
-        "psr-4": {
-            "App\\": "app/",
-            "Database\\Factories\\": "database/factories/",
-            "Database\\Seeders\\": "database/seeders/"
-        }
+    "psr-4": {
+        "App\\": "app/",
+        "Database\\Factories\\": "database/factories/",
+        "Database\\Seeders\\": "database/seeders/"
+    }
+
     },
     "autoload-dev": {
         "psr-4": {

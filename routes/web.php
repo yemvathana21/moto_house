@@ -15,6 +15,7 @@ use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
 use Illuminate\Support\Facades\Route;
 
+
 Route::get('/', HomeController::class);
 Route::redirect('/about-us', '/page/about-us');
 Route::get('/shop', ShopController::class);
@@ -59,3 +60,9 @@ Route::post('/logout', function () {
     session()->regenerateToken();
     return redirect('/');
 })->name('logout');
+
+Route::middleware(['web'])->group(function () {
+    Route::get('/payment/callback', [PaymentController::class, 'callback'])->name('payment.callback');
+    Route::get('/payment/cancel', [PaymentController::class, 'cancel'])->name('payment.cancel');
+    Route::post('/payment/webhook', [PaymentController::class, 'webhook'])->name('payment.webhook');
+});

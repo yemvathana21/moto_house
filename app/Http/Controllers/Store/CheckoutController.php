@@ -111,7 +111,7 @@ class CheckoutController extends Controller
             'shipping_postal_code' => $data['postal_code'] ?? '',
             'shipping_country' => $data['country'] ?? '',
             'payment_method' => $data['payment_method'],
-            'payment_status' => $data['payment_method'] === 'khqr' ? 'pending' : 'pending',
+            'payment_status' => 'pending',
         ]);
 
         foreach ($cart as $item) {
