@@ -30,6 +30,6 @@ class OrderTrackingController extends Controller
                 ->get();
         }
 
-        return view('store.order-tracking', compact('orders'));
+        return view('store.order-tracking', compact('orders', 'order'));
     }
 }

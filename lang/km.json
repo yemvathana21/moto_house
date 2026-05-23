@@ -163,6 +163,11 @@
     "You don't have any orders yet.": "អ្នកមិនទាន់មានការបញ្ជាទិញនៅឡើយទេ។",
     "Your Orders": "ការបញ្ជាទិញរបស់អ្នក",
     "Back to Home": "ត្រឡប់ទៅទំព័រដើម",
-    "Order placed! Your order #:number has been confirmed.": "ការបញ្ជាទិញ #:number ត្រូវបានបញ្ជាក់រួចរាល់!"
-    
+    "Order placed! Your order #:number has been confirmed.": "ការបញ្ជាទិញ #:number ត្រូវបានបញ្ជាក់រួចរាល់!",
+    "Placed on": "បានដាក់នៅ",
+    "Order not found.": "រកមិនឃើញការបញ្ជាទិញ។",
+    "Please check your order number and try again.": "សូមពិនិត្យលេខបញ្ជាទិញរបស់អ្នក ហើយព្យាយាមម្តងទៀត។",
+    "Added to wishlist": "បានបន្ថែមទៅបញ្ជីចំណូលចិត្ត",
+    "Removed from wishlist": "បានដកចេញពីបញ្ជីចំណូលចិត្ត",
+    "Please sign in to save wishlist items": "សូមចូលគណនីដើម្បីរក្សាទុករបស់ដែលអ្នកចូលចិត្ត"
 }

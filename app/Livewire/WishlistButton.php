@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Customer;
 use App\Models\Wishlist;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class WishlistButton extends Component
@@ -26,7 +27,7 @@ class WishlistButton extends Component
     {
         $customer = $this->getCustomer();
         if (!$customer) {
-            $this->dispatch('notify', message: 'Please place an order first to save wishlist items');
+            $this->dispatch('notify', message: __('Please sign in to save wishlist items'));
             return;
         }
 
@@ -35,21 +36,35 @@ class WishlistButton extends Component
                 ->where('product_id', $this->productId)
                 ->delete();
             $this->isWishlisted = false;
-            $this->dispatch('notify', message: 'Removed from wishlist');
+            $this->dispatch('notify', message: __('Removed from wishlist'));
+            $this->dispatch('wishlist-updated');
         } else {
             Wishlist::create([
                 'customer_id' => $customer->id,
                 'product_id' => $this->productId,
             ]);
             $this->isWishlisted = true;
-            $this->dispatch('notify', message: 'Added to wishlist');
+            $this->dispatch('notify', message: __('Added to wishlist'));
+            $this->dispatch('wishlist-updated');
         }
     }
 
     private function getCustomer(): ?Customer
     {
         $id = session('customer_id');
-        return $id ? Customer::find($id) : null;
+        if ($id) {
+            return Customer::find($id);
+        }
+
+        $user = Auth::user();
+        if ($user) {
+            return Customer::firstOrCreate(
+                ['email' => $user->email],
+                ['name' => $user->name, 'phone' => '']
+            );
+        }
+
+        return null;
     }
 
     public function render()

@@ -163,5 +163,11 @@
     "You don't have any orders yet.": "You don't have any orders yet.",
     "Your Orders": "Your Orders",
     "Back to Home": "Back to Home",
-    "Order placed! Your order #:number has been confirmed.": "Order placed! Your order #:number has been confirmed."
+    "Order placed! Your order #:number has been confirmed.":     "Order placed! Your order #:number has been confirmed.",
+    "Placed on": "Placed on",
+    "Order not found.": "Order not found.",
+    "Please check your order number and try again.": "Please check your order number and try again.",
+    "Added to wishlist": "Added to wishlist",
+    "Removed from wishlist": "Removed from wishlist",
+    "Please sign in to save wishlist items": "Please sign in to save wishlist items"
 }

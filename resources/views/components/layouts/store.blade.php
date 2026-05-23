@@ -30,10 +30,11 @@
                 </nav>
 
                 <div class="flex items-center gap-1">
-                    <a href="/wishlist" class="p-2.5 rounded-xl text-gray-500 hover:text-orange-600 hover:bg-orange-50 transition hidden md:block" title="{{ __('Wishlist') }}">
+                    <a href="/wishlist" class="relative p-2.5 rounded-xl text-gray-500 hover:text-orange-600 hover:bg-orange-50 transition hidden md:block" title="{{ __('Wishlist') }}">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
                         </svg>
+                        <livewire:wishlist-counter />
                     </a>
 
                     @auth
@@ -128,6 +129,20 @@
         @endif
         {{ $slot }}
     </main>
+
+    <div x-data="{ show: false, message: '' }"
+         x-on:notify.window="message = $event.detail.message; show = true; setTimeout(() => show = false, 3000)"
+         x-show="show"
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="translate-y-2 opacity-0"
+         x-transition:enter-end="translate-y-0 opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="translate-y-0 opacity-100"
+         x-transition:leave-end="translate-y-2 opacity-0"
+         x-cloak
+         class="fixed bottom-6 right-6 z-50 bg-gray-900 text-white px-5 py-3 rounded-xl shadow-lg text-sm font-medium">
+        <span x-text="message"></span>
+    </div>
 
     @livewireScriptConfig
     <footer class="bg-gray-950 text-gray-400 mt-16">
