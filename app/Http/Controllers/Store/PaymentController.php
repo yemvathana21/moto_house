@@ -12,9 +12,8 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class PaymentController extends Controller
 {
-    public function show(string $id)
+    public function show(Order $order)
     {
-        $order = Order::findOrFail($id);
 
         $merchantName = Setting::getValue('aba_merchant_name', 'Moto House') ?? 'Moto House';
         $merchantId = Setting::getValue('aba_merchant_id', '') ?? '';
