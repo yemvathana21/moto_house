@@ -18,11 +18,11 @@ return new class extends Migration
             $table->integer('stock_quantity')->default(0);
             $table->string('sku')->unique();
             $table->foreignId('category_id')->nullable()->constrained()->nullOnDelete();
-            $table->json('images')->nullable();
+            $table->Longtext('images')->nullable();
             $table->boolean('is_active')->default(true);
             $table->boolean('is_featured')->default(false);
             $table->string('brand')->nullable();
-            $table->json('specifications')->nullable();
+            $table->longText('specifications')->nullable();
             $table->timestamps();
         });
     }
