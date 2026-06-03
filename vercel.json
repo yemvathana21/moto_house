@@ -1,6 +1,7 @@
 {
     "version": 2,
     "framework": null,
+    "buildCommand": "npm run build",
     "functions": {
         "api/index.php": { "runtime": "vercel-php@0.7.3" }
     },
@@ -18,11 +19,10 @@
             "dest": "/api/index.php"
         }
     ],
-    "outputDirectory": "public",
     "env": {
         "APP_ENV": "production",
-        "APP_DEBUG": "true",
-        "APP_URL": "https://your-app-name.vercel.app",
+        "APP_DEBUG": "false",
+        "APP_URL": "https://motohouse.vercel.app",
         "APP_KEY": "base64:H/p49zJNoRFWvT1smTOqInir9oK3Jrhw+da7/5sloFo=",
 
         "APP_CONFIG_CACHE": "/tmp/config.php",
