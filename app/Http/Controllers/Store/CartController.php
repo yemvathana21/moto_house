@@ -76,7 +76,7 @@ class CartController extends Controller
     private function dispatchCartUpdated(): void
     {
         if (class_exists(\Livewire\Livewire::class)) {
-            session()->flash('success', 'Cart updated successfully.');
+            \Livewire\Livewire::dispatch('cart-updated');
         }
     }
 }

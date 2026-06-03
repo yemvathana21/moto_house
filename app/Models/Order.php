@@ -14,6 +14,7 @@ class Order extends Model
         'shipping_address', 'shipping_city', 'shipping_state',
         'shipping_postal_code', 'shipping_country',
         'payment_method', 'payment_status',
+        'transaction_id', 'paid_at',
     ];
 
     protected function casts(): array

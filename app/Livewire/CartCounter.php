@@ -10,6 +10,11 @@ class CartCounter extends Component
 
     protected $listeners = ['cart-updated' => 'updateCount'];
 
+    public function mount(): void
+    {
+        $this->updateCount();
+    }
+
     public function updateCount(): void
     {
         $cart = session()->get('cart', []);

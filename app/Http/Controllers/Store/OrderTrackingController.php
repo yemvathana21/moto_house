@@ -13,7 +13,10 @@ class OrderTrackingController extends Controller
     {
         $user = Auth::user();
 
-        $customer = Customer::where('email', $user->email)->first();
+        $customer = null;
+        if ($user) {
+            $customer = Customer::where('email', $user->email)->first();
+        }
 
         $orders = collect();
 

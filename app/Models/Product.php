@@ -69,6 +69,6 @@ class Product extends Model
 
     public function getFinalPriceAttribute(): float
     {
-        return $this->compare_price ?: $this->price;
+        return $this->compare_price ? (float) $this->compare_price : (float) $this->price;
     }
 }

@@ -19,7 +19,7 @@ class ContactController extends Controller
 
             try {
                 Mail::raw("From: {$data['name']} ({$data['email']})\nSubject: {$data['subject']}\n\n{$data['message']}", function ($msg) use ($data) {
-                    $msg->to(config('mail.from.address'))
+                    $msg->to(config('contact.email', config('mail.from.address')))
                         ->subject('Contact Form: ' . $data['subject'])
                         ->replyTo($data['email'], $data['name']);
                 });

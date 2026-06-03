@@ -10,7 +10,6 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 </head>
-@livewireScripts
 <body class="bg-gray-50 text-gray-900 antialiased font-sans overflow-x-hidden">
     <header class="bg-white border-b border-gray-100 sticky top-0 z-50 shadow-sm" x-data="{ mobileOpen: false }">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -144,7 +143,6 @@
         <span x-text="message"></span>
     </div>
 
-    @livewireScriptConfig
     <footer class="bg-gray-950 text-gray-400 mt-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
@@ -161,8 +159,7 @@
                     <h4 class="text-white font-semibold mb-4 text-sm uppercase tracking-wider">{{ __('Shop') }}</h4>
                     <ul class="space-y-3 text-sm">
                         <li><a href="/shop" class="hover:text-white transition">{{ __('All Products') }}</a></li>
-                        @php $navCats = \App\Models\Category::where('is_active', true)->whereNull('parent_id')->get(); @endphp
-                        @foreach ($navCats as $cat)
+                        @foreach (($navCats ?? \App\Models\Category::where('is_active', true)->whereNull('parent_id')->get()) as $cat)
                             <li><a href="/shop?category_id={{ $cat->id }}" class="hover:text-white transition">{{ $cat->name }}</a></li>
                         @endforeach
                     </ul>
@@ -199,6 +196,8 @@
             </div>
         </div>
     </footer>
+    @livewireScripts
+    @livewireScriptConfig
     @stack('scripts')
 </body>
 </html>
