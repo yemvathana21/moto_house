@@ -4,7 +4,7 @@ namespace App\Filament\Pages;
 
 use App\Models\Setting;
 use BackedEnum;
-use Filament\Schemas\Schema; // <--- MAKE SURE THIS TYPE IS IMPORTED
+use Filament\Schemas\Schema; // <--- MAKE SURE THIS TYPE IS 
 use Filament\Schemas\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
