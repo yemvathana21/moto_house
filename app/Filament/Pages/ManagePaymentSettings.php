@@ -38,10 +38,10 @@ class ManagePaymentSettings extends Page implements HasForms
     {
         $this->form->fill([
             'payment_method' => Setting::getValue('payment_method', 'all'),
-            'aba_merchant_name' => Setting::getValue('aba_merchant_name', 'Moto House'),
-            'aba_merchant_id' => Setting::getValue('aba_merchant_id', ''),
-            'aba_bakong_id' => Setting::getValue('aba_bakong_id', ''),
-            'aba_bank' => Setting::getValue('aba_bank', 'ABA Bank'),
+            'bakong_merchant_name' => Setting::getValue('bakong_merchant_name', 'Moto House'),
+            'bakong_merchant_id' => Setting::getValue('bakong_merchant_id', ''),
+            'bakong_bakong_id' => Setting::getValue('bakong_bakong_id', ''),
+            'bakong_bank' => Setting::getValue('bakong_bank', 'Bakong'),
             'currency' => Setting::getValue('currency', 'USD'),
             'currency_position' => Setting::getValue('currency_position', 'before'),
         ]);
@@ -57,33 +57,33 @@ class ManagePaymentSettings extends Page implements HasForms
                         Select::make('payment_method')
                             ->options([
                                 'cod' => 'Cash on Delivery',
-                                'khqr' => 'ABA KHQR Pay',
-                                'all' => 'COD + ABA KHQR',
+                                'khqr' => 'Bakong KHQR Pay',
+                                'all' => 'COD + Bakong KHQR',
                             ])
                             ->required(),
                     ]),
 
-                Section::make('ABA KHQR Settings')
-                    ->description('Enter your ABA Bank account details to generate KHQR codes for payment. Customers will scan the QR code with their ABA Mobile app.')
+                Section::make('Bakong KHQR Settings')
+                    ->description('Enter your Bakong account details to generate KHQR codes for payment. Customers can scan the QR code with any Bakong-supported banking app.')
                     ->columns(2)
                     ->schema([
-                        TextInput::make('aba_merchant_name')
+                        TextInput::make('bakong_merchant_name')
                             ->label('Account Holder Name')
                             ->placeholder('e.g. YEM VATHANA')
-                            ->helperText('The name on your ABA bank account')
+                            ->helperText('The name on your bank account')
                             ->required(),
-                        TextInput::make('aba_merchant_id')
-                            ->label('ABA Account ID')
+                        TextInput::make('bakong_merchant_id')
+                            ->label('Account ID')
                             ->placeholder('e.g. 000123456')
-                            ->helperText('Your ABA account number')
+                            ->helperText('Your Bakong account ID or bank account number')
                             ->required(),
-                        TextInput::make('aba_bakong_id')
+                        TextInput::make('bakong_bakong_id')
                             ->label('Bakong KHQR ID (optional)')
                             ->placeholder('e.g. bakong@id')
-                            ->helperText('If using Bakong instead of ABA account ID'),
-                        TextInput::make('aba_bank')
+                            ->helperText('If using a dedicated Bakong KHQR ID'),
+                        TextInput::make('bakong_bank')
                             ->label('Bank Name')
-                            ->default('ABA Bank')
+                            ->default('Bakong')
                             ->helperText('Displayed on the payment page'),
                     ]),
 

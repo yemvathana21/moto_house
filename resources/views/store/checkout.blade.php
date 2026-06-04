@@ -70,10 +70,10 @@
                                 <label class="flex items-center gap-4 p-4 border-2 border-gray-200 rounded-xl cursor-pointer transition-all has-[:checked]:border-orange-500 has-[:checked]:bg-orange-50">
                                     <input type="radio" name="payment_method" value="khqr" class="w-5 h-5 text-orange-600 border-gray-300 focus:ring-orange-500">
                                     <div class="flex items-center gap-3">
-                                        <div class="w-8 h-8 bg-[#005a9c] rounded-lg flex items-center justify-center text-white text-[10px] font-bold leading-tight text-center">ABA<br></div>
+                                        <div class="w-8 h-8 bg-emerald-600 rounded-lg flex items-center justify-center text-white text-[10px] font-bold leading-tight text-center">KH<br>QR</div>
                                         <div>
-                                            <p class="font-semibold text-gray-900">{{ __('ABA KHQR Pay') }}</p>
-                                            <p class="text-sm text-gray-500">{{ __('Scan QR code with ABA Mobile app') }}</p>
+                                            <p class="font-semibold text-gray-900">{{ __('Bakong KHQR Pay') }}</p>
+                                            <p class="text-sm text-gray-500">{{ __('Scan QR code with any Bakong-supported banking app') }}</p>
                                         </div>
                                     </div>
                                 </label>

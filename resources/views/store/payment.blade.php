@@ -23,15 +23,15 @@
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
                         </svg>
-                        {{ __('Pay with ABA Mobile') }}
+                        {{ __('Pay with Bakong') }}
                     </a>
                 </div>
 
                 <div class="bg-gray-50 rounded-xl p-5 mb-8">
                     <h4 class="font-semibold text-gray-900 mb-3 text-sm">{{ __('Instructions') }}:</h4>
                     <ol class="space-y-2 text-sm text-gray-600 list-decimal list-inside">
-                        <li>{{ __('Tap "Pay with ABA Mobile" above') }}</li>
-                        <li>{{ __('ABA Mobile will open with payment details pre-filled') }}</li>
+                        <li>{{ __('Tap "Pay with Bakong" above') }}</li>
+                        <li>{{ __('Your banking app will open with payment details pre-filled') }}</li>
                         <li>{{ __('Enter your password and confirm the payment') }}</li>
                     </ol>
                 </div>
@@ -43,7 +43,7 @@
                 </div>
 
                 <div class="text-center space-y-2 mb-8">
-                    <p class="font-semibold text-gray-900">{{ __('Pay with ABA KHQR') }}</p>
+                    <p class="font-semibold text-gray-900">{{ __('Pay with Bakong KHQR') }}</p>
                     <p class="text-sm text-gray-500">{{ __('Merchant') }}: <span class="font-medium text-gray-900">{{ $merchantName }}</span></p>
                     @if ($merchantId || $bakongId)
                         <p class="text-sm text-gray-500">{{ __('Account') }}: <span class="font-medium text-gray-900">{{ $bakongId ?: $merchantId }}</span></p>
@@ -57,7 +57,7 @@
                         <span class="text-gray-300">|</span>
                         <span class="inline-flex items-center gap-1">
                             <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-                            {{ __('Powered by ABA Bank') }}
+                            {{ __('Powered by Bakong') }}
                         </span>
                     </div>
                 </div>
@@ -65,7 +65,7 @@
                 <div class="bg-gray-50 rounded-xl p-5 mb-8">
                     <h4 class="font-semibold text-gray-900 mb-3 text-sm">{{ __('Instructions') }}:</h4>
                     <ol class="space-y-2 text-sm text-gray-600 list-decimal list-inside">
-                        <li>{{ __('Scan the QR code above with ABA Mobile') }}</li>
+                        <li>{{ __('Scan the QR code above with any Bakong-supported banking app') }}</li>
                         <li>{{ __('Confirm the amount and complete payment') }}</li>
                     </ol>
                 </div>

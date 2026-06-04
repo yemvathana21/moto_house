@@ -12,6 +12,7 @@ use App\Http\Controllers\Store\PaymentController;
 use App\Http\Controllers\Store\ShopController;
 use App\Http\Controllers\Store\WishlistController;
 use App\Livewire\Auth\Login;
+use App\Livewire\Auth\Logout;
 use App\Livewire\Auth\Register;
 use Illuminate\Support\Facades\Route;
 

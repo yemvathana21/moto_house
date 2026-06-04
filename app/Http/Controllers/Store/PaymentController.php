@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Store;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\Setting;
-use App\Services\ABAPaywayService;
+use App\Services\BakongService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
@@ -14,35 +14,35 @@ class PaymentController extends Controller
 {
     public function show(Order $order)
     {
+        $merchantName = Setting::getValue('bakong_merchant_name', 'Moto House') ?? 'Moto House';
+        $merchantId = Setting::getValue('bakong_merchant_id', '') ?? '';
+        $bakongId = Setting::getValue('bakong_bakong_id', '') ?? '';
+        $bankName = Setting::getValue('bakong_bank', 'Bakong') ?? 'Bakong';
 
-        $merchantName = Setting::getValue('aba_merchant_name', 'Moto House') ?? 'Moto House';
-        $merchantId = Setting::getValue('aba_merchant_id', '') ?? '';
-        $bakongId = Setting::getValue('aba_bakong_id', '') ?? '';
-        $bankName = Setting::getValue('aba_bank', 'ABA Bank') ?? 'ABA Bank';
+        $qrString = null;
+        $deepLink = null;
 
         try {
-            $abaService = app(ABAPaywayService::class);
-            $result = $abaService->getCheckoutPage($order->total, $order->id, 'Payment for Order #' . $order->order_number);
+            $bakongService = app(BakongService::class);
+            $result = $bakongService->generateQR($order->total, (string) $order->id);
 
             if ($result['success']) {
-                return response($result['html'])->header('Content-Type', 'text/html; charset=utf-8');
+                $qrString = $result['khqr'];
+                $deepLink = $result['deeplink'] ?? null;
             }
-
-            Log::warning('ABA PayWay API error, falling back to manual QR', ['error' => $result['error']]);
         } catch (\Exception $e) {
-            Log::warning('ABA PayWay API unavailable, falling back to manual QR', ['error' => $e->getMessage()]);
+            Log::warning('Bakong KHQR generation failed, using fallback', ['error' => $e->getMessage()]);
         }
 
-        $amount = number_format($order->total, 2, '.', '');
-        $qrString = $this->generateKHQR($amount, $merchantName, $merchantId, $bakongId);
+        if (!$qrString) {
+            $qrString = $this->generateKHQR((string) $order->total, $merchantName, $merchantId, $bakongId);
+        }
 
         try {
             $qrSvg = QrCode::size(256)->generate($qrString);
         } catch (\Exception $e) {
             $qrSvg = '<p class="text-red-500">QR generation failed</p>';
         }
-
-        $deepLink = '';
 
         return view('store.payment', compact('order', 'qrSvg', 'qrString', 'deepLink', 'merchantName', 'merchantId', 'bakongId', 'bankName'));
     }

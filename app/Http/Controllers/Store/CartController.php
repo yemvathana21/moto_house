@@ -76,7 +76,7 @@ class CartController extends Controller
     private function dispatchCartUpdated(): void
     {
         if (class_exists(\Livewire\Livewire::class)) {
-            \Livewire\Livewire::dispatch('cart-updated');
+            event('cart-updated');
         }
     }
 }
