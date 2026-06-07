@@ -47,7 +47,7 @@ class ProductImporter extends Importer
         ];
     }
 
-    protected function resolveRecord(): ?Product
+    public function resolveRecord(): ?Product
     {
         if ($sku = $this->data['sku'] ?? null) {
             return Product::firstOrNew(['sku' => $sku]);
@@ -60,7 +60,7 @@ class ProductImporter extends Importer
         return new Product();
     }
 
-    protected function fillRecord(): void
+    public function fillRecord(): void
     {
         $data = $this->data;
 

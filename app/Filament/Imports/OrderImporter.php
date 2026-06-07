@@ -49,12 +49,12 @@ class OrderImporter extends Importer
         ];
     }
 
-    protected function resolveRecord(): ?Order
+    public function resolveRecord(): ?Order
     {
         return Order::firstOrNew(['order_number' => $this->data['order_number']]);
     }
 
-    protected function fillRecord(): void
+    public function fillRecord(): void
     {
         $data = $this->data;
 
