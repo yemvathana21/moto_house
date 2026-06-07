@@ -22,53 +22,7 @@
                     {{ __('Moto House') }}
                 </a>
 
-                <nav class="hidden md:flex items-center gap-1 text-sm font-medium flex-1">
-                    <a href="/" class="px-3 py-2 rounded-lg hover:bg-orange-50 hover:text-orange-600 transition {{ request()->is('/') ? 'text-orange-600 bg-orange-50' : 'text-gray-700' }}">{{ __('Home') }}</a>
-                    <a href="/shop" class="px-3 py-2 rounded-lg hover:bg-orange-50 hover:text-orange-600 transition {{ request()->is('shop') || request()->is('shop/*') ? 'text-orange-600 bg-orange-50' : 'text-gray-700' }}">{{ __('Shop') }}</a>
-                    <a href="/wishlist" class="px-3 py-2 rounded-lg hover:bg-orange-50 hover:text-orange-600 transition {{ request()->is('wishlist') ? 'text-orange-600 bg-orange-50' : 'text-gray-700' }}">{{ __('Wishlist') }}</a>
-                    <a href="/order/track" class="px-3 py-2 rounded-lg hover:bg-orange-50 hover:text-orange-600 transition {{ request()->is('order/*') ? 'text-orange-600 bg-orange-50' : 'text-gray-700' }}">{{ __('Track Order') }}</a>
-                    <a href="/wishlist" class="p-2.5 rounded-xl text-gray-500 hover:text-orange-600 hover:bg-orange-50 transition" title="{{ __('Wishlist') }}">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-                        </svg>
-                    </a>
-                    <div x-data="{ q: '', results: [], open: false, timer: null, showInput: false }"
-                         @click.outside="if (!open && !showInput) return; open = false; showInput = false" class="relative">
-                        <button @click="showInput = !showInput; if(showInput) { $nextTick(() => $el.nextElementSibling.querySelector('input').focus()) }"
-                                x-show="!showInput"
-                                class="p-2.5 rounded-xl text-gray-500 hover:text-orange-600 hover:bg-orange-50 transition" title="{{ __('Search') }}">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                        </button>
-                        <div x-show="showInput" class="absolute right-0 top-0 w-72" x-cloak>
-                            <input type="text" x-model="q"
-                                   @input="clearTimeout(timer); timer = setTimeout(async () => { if (q.length < 2) { results = []; open = false; return; } const r = await fetch('/live-search?q=' + encodeURIComponent(q)); results = await r.json(); open = results.length > 0; }, 300)"
-                                   @keydown.escape="showInput = false; open = false"
-                                   @keydown.enter="if (results.length) { window.location = '/shop/' + results[0].slug; showInput = false }"
-                                   placeholder="{{ __('Search...') }}"
-                                   class="w-full pl-10 pr-8 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent focus:bg-white transition">
-                            <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                            <button x-show="q" @click="q = ''; results = [];" type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                            </button>
-                        </div>
-                        <div x-show="open" class="absolute top-full right-0 mt-1 w-72 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-50 max-h-80 overflow-y-auto" x-cloak>
-                            <template x-for="p in results" :key="p.id">
-                                <a :href="'/shop/' + p.slug" @click="showInput = false" class="flex items-center gap-3 px-4 py-2.5 hover:bg-orange-50 transition">
-                                    <div class="w-10 h-10 rounded-lg bg-gray-100 overflow-hidden shrink-0">
-                                        <img :src="p.image ? '{{ asset('storage') }}/' + p.image : ''" class="w-full h-full object-cover">
-                                    </div>
-                                    <div class="min-w-0 flex-1">
-                                        <p class="text-sm font-medium text-gray-900 truncate" x-text="p.name"></p>
-                                        <p class="text-xs text-gray-500" x-text="p.brand"></p>
-                                    </div>
-                                    <p class="text-sm font-bold text-orange-600 shrink-0" x-text="'$' + p.price.toFixed(2)"></p>
-                                </a>
-                            </template>
-                        </div>
-                    </div>
-                </nav>
-
-                <div class="flex items-center gap-1">
+                <div class="flex items-center gap-1 ml-auto">
                     <button @click="searchOpen = !searchOpen; if(searchOpen) { $nextTick(() => $el.nextElementSibling.querySelector('input').focus()) }" class="md:hidden p-2.5 rounded-xl text-gray-500 hover:text-orange-600 hover:bg-orange-50 transition" title="{{ __('Search') }}">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                     </button>
@@ -124,6 +78,51 @@
                         <svg x-show="mobileOpen" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                     </button>
                 </div>
+                <nav class="hidden md:flex items-center gap-1 text-sm font-medium ml-4">
+                    <a href="/" class="px-3 py-2 rounded-lg hover:bg-orange-50 hover:text-orange-600 transition {{ request()->is('/') ? 'text-orange-600 bg-orange-50' : 'text-gray-700' }}">{{ __('Home') }}</a>
+                    <a href="/shop" class="px-3 py-2 rounded-lg hover:bg-orange-50 hover:text-orange-600 transition {{ request()->is('shop') || request()->is('shop/*') ? 'text-orange-600 bg-orange-50' : 'text-gray-700' }}">{{ __('Shop') }}</a>
+                    <a href="/wishlist" class="px-3 py-2 rounded-lg hover:bg-orange-50 hover:text-orange-600 transition {{ request()->is('wishlist') ? 'text-orange-600 bg-orange-50' : 'text-gray-700' }}">{{ __('Wishlist') }}</a>
+                    <a href="/order/track" class="px-3 py-2 rounded-lg hover:bg-orange-50 hover:text-orange-600 transition {{ request()->is('order/*') ? 'text-orange-600 bg-orange-50' : 'text-gray-700' }}">{{ __('Track Order') }}</a>
+                    <a href="/wishlist" class="p-2.5 rounded-xl text-gray-500 hover:text-orange-600 hover:bg-orange-50 transition" title="{{ __('Wishlist') }}">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                        </svg>
+                    </a>
+                    <div x-data="{ q: '', results: [], open: false, timer: null, showInput: false }"
+                         @click.outside="if (!open && !showInput) return; open = false; showInput = false" class="relative">
+                        <button @click="showInput = !showInput; if(showInput) { $nextTick(() => $el.nextElementSibling.querySelector('input').focus()) }"
+                                x-show="!showInput"
+                                class="p-2.5 rounded-xl text-gray-500 hover:text-orange-600 hover:bg-orange-50 transition" title="{{ __('Search') }}">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        </button>
+                        <div x-show="showInput" class="absolute right-0 top-0 w-72" x-cloak>
+                            <input type="text" x-model="q"
+                                   @input="clearTimeout(timer); timer = setTimeout(async () => { if (q.length < 2) { results = []; open = false; return; } const r = await fetch('/live-search?q=' + encodeURIComponent(q)); results = await r.json(); open = results.length > 0; }, 300)"
+                                   @keydown.escape="showInput = false; open = false"
+                                   @keydown.enter="if (results.length) { window.location = '/shop/' + results[0].slug; showInput = false }"
+                                   placeholder="{{ __('Search...') }}"
+                                   class="w-full pl-10 pr-8 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent focus:bg-white transition">
+                            <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                            <button x-show="q" @click="q = ''; results = [];" type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                            </button>
+                        </div>
+                        <div x-show="open" class="absolute top-full right-0 mt-1 w-72 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-50 max-h-80 overflow-y-auto" x-cloak>
+                            <template x-for="p in results" :key="p.id">
+                                <a :href="'/shop/' + p.slug" @click="showInput = false" class="flex items-center gap-3 px-4 py-2.5 hover:bg-orange-50 transition">
+                                    <div class="w-10 h-10 rounded-lg bg-gray-100 overflow-hidden shrink-0">
+                                        <img :src="p.image ? '{{ asset('storage') }}/' + p.image : ''" class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="min-w-0 flex-1">
+                                        <p class="text-sm font-medium text-gray-900 truncate" x-text="p.name"></p>
+                                        <p class="text-xs text-gray-500" x-text="p.brand"></p>
+                                    </div>
+                                    <p class="text-sm font-bold text-orange-600 shrink-0" x-text="'$' + p.price.toFixed(2)"></p>
+                                </a>
+                            </template>
+                        </div>
+                    </div>
+                </nav>
             </div>
         </div>
 
