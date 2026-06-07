@@ -12,6 +12,10 @@
             "dest": "/public/build/$1"
         },
         {
+            "src": "/livewire-([a-f0-9]+)/(.*)",
+            "dest": "/api/index.php"
+        },
+        {
             "src": "/(.*\\.(?:css|js|png|jpg|jpeg|gif|svg|ico|ttf|woff|woff2|eot|otf|webp|avif|txt))$",
             "dest": "/public/$1"
         },
