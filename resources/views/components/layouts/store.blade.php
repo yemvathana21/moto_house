@@ -22,72 +22,12 @@
                     {{ __('Moto House') }}
                 </a>
 
-                <div class="flex items-center gap-1 ml-auto">
-                    <button @click="searchOpen = !searchOpen; if(searchOpen) { $nextTick(() => $el.nextElementSibling.querySelector('input').focus()) }" class="md:hidden p-2.5 rounded-xl text-gray-500 hover:text-orange-600 hover:bg-orange-50 transition" title="{{ __('Search') }}">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                    </button>
-
-                    @auth
-                        <div class="relative" x-data="{ open: false }">
-                            <button @click="open = !open" class="flex items-center gap-2 px-3 py-2 rounded-xl text-gray-700 hover:text-orange-600 hover:bg-orange-50 transition">
-                                <div class="w-7 h-7 bg-orange-100 rounded-full flex items-center justify-center">
-                                    <span class="text-xs font-bold text-orange-600">{{ substr(auth()->user()->name, 0, 1) }}</span>
-                                </div>
-                                <span class="text-sm font-medium hidden lg:block">{{ auth()->user()->name }}</span>
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                            </button>
-                            <div x-show="open" @click.away="open = false" class="absolute right-0 mt-2 w-52 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-50" x-cloak>
-                                <div class="px-4 py-2 border-b border-gray-100">
-                                    <p class="text-sm font-medium text-gray-900 truncate">{{ auth()->user()->name }}</p>
-                                    <p class="text-xs text-gray-500 truncate">{{ auth()->user()->email }}</p>
-                                </div>
-                                <a href="/my-account" class="block px-4 py-2.5 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition">{{ __('My Account') }}</a>
-                                <a href="/order/track" class="block px-4 py-2.5 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition">{{ __('Track Order') }}</a>
-                                <form action="/logout" method="POST">
-                                    @csrf
-                                    <button type="submit" class="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition">{{ __('Sign Out') }}</button>
-                                </form>
-                            </div>
-                        </div>
-                    @else
-                        <a href="{{ route('login') }}" class="hidden sm:inline-flex px-4 py-2 text-sm font-semibold text-gray-700 hover:text-orange-600 hover:bg-orange-50 rounded-xl transition">{{ __('Sign In') }}</a>
-                        <a href="{{ route('register') }}" class="hidden sm:inline-flex px-4 py-2 text-sm font-semibold bg-gray-900 text-white rounded-xl hover:bg-orange-600 transition">{{ __('Register') }}</a>
-                    @endauth
-
-                    <div class="relative" x-data="{ open: false }">
-                        <button @click="open = !open" class="p-2.5 rounded-xl text-gray-500 hover:text-orange-600 hover:bg-orange-50 transition" title="{{ __('Language') }}">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                            </svg>
-                        </button>
-                        <div x-show="open" @click.away="open = false" class="absolute right-0 mt-2 w-32 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-50" x-cloak>
-                            <a href="{{ url('language/en') }}" class="block px-4 py-2.5 text-sm {{ app()->getLocale() === 'en' ? 'text-orange-600 font-semibold' : 'text-gray-700 hover:bg-orange-50 hover:text-orange-600' }} transition">English</a>
-                            <a href="{{ url('language/km') }}" class="block px-4 py-2.5 text-sm {{ app()->getLocale() === 'km' ? 'text-orange-600 font-semibold' : 'text-gray-700 hover:bg-orange-50 hover:text-orange-600' }} transition">ភាសាខ្មែរ</a>
-                        </div>
-                    </div>
-
-                    <a href="/cart" class="relative p-2.5 rounded-xl text-gray-500 hover:text-orange-600 hover:bg-orange-50 transition">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/>
-                        </svg>
-                        <livewire:cart-counter />
-                    </a>
-
-                    <button @click="mobileOpen = !mobileOpen" class="md:hidden p-2.5 rounded-xl text-gray-500 hover:text-orange-600 hover:bg-orange-50 transition">
-                        <svg x-show="!mobileOpen" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
-                        <svg x-show="mobileOpen" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                    </button>
-                </div>
-                <nav class="hidden md:flex items-center gap-1 text-sm font-medium ml-4">
-                    <a href="/" class="px-3 py-2 rounded-lg hover:bg-orange-50 hover:text-orange-600 transition {{ request()->is('/') ? 'text-orange-600 bg-orange-50' : 'text-gray-700' }}">{{ __('Home') }}</a>
-                    <a href="/shop" class="px-3 py-2 rounded-lg hover:bg-orange-50 hover:text-orange-600 transition {{ request()->is('shop') || request()->is('shop/*') ? 'text-orange-600 bg-orange-50' : 'text-gray-700' }}">{{ __('Shop') }}</a>
-                    <a href="/wishlist" class="px-3 py-2 rounded-lg hover:bg-orange-50 hover:text-orange-600 transition {{ request()->is('wishlist') ? 'text-orange-600 bg-orange-50' : 'text-gray-700' }}">{{ __('Wishlist') }}</a>
-                    <a href="/order/track" class="px-3 py-2 rounded-lg hover:bg-orange-50 hover:text-orange-600 transition {{ request()->is('order/*') ? 'text-orange-600 bg-orange-50' : 'text-gray-700' }}">{{ __('Track Order') }}</a>
-                    <a href="/wishlist" class="p-2.5 rounded-xl text-gray-500 hover:text-orange-600 hover:bg-orange-50 transition" title="{{ __('Wishlist') }}">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-                        </svg>
-                    </a>
+                
+                <nav class="hidden md:flex items-center gap-1 text-sm font-medium ml-auto">
+                    <a href="/" class="px-3 py-2 rounded-lg hover:bg-orange-50 hover:text-orange-600 transition whitespace-nowrap {{ request()->is('/') ? 'text-orange-600 bg-orange-50' : 'text-gray-700' }}">{{ __('Home') }}</a>
+                    <a href="/shop" class="px-3 py-2 rounded-lg hover:bg-orange-50 hover:text-orange-600 transition whitespace-nowrap {{ request()->is('shop') || request()->is('shop/*') ? 'text-orange-600 bg-orange-50' : 'text-gray-700' }}">{{ __('Shop') }}</a>
+                    <a href="/wishlist" class="px-3 py-2 rounded-lg hover:bg-orange-50 hover:text-orange-600 transition whitespace-nowrap {{ request()->is('wishlist') ? 'text-orange-600 bg-orange-50' : 'text-gray-700' }}">{{ __('Wishlist') }}</a>
+                    <a href="/order/track" class="px-3 py-2 rounded-lg hover:bg-orange-50 hover:text-orange-600 transition whitespace-nowrap {{ request()->is('order/*') ? 'text-orange-600 bg-orange-50' : 'text-gray-700' }}">{{ __('Track Order') }}</a>
                     <div x-data="{ q: '', results: [], open: false, timer: null, showInput: false }"
                          @click.outside="if (!open && !showInput) return; open = false; showInput = false" class="relative">
                         <button @click="showInput = !showInput; if(showInput) { $nextTick(() => $el.nextElementSibling.querySelector('input').focus()) }"
@@ -122,7 +62,63 @@
                             </template>
                         </div>
                     </div>
+                    <a href="/wishlist" class="p-2.5 rounded-xl text-gray-500 hover:text-orange-600 hover:bg-orange-50 transition" title="{{ __('Wishlist') }}">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                        </svg>
+                    </a>
+                    <a href="/cart" class="relative p-2.5 rounded-xl text-gray-500 hover:text-orange-600 hover:bg-orange-50 transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/>
+                        </svg>
+                        <livewire:cart-counter />
+                    </a>
+                    <div class="relative" x-data="{ open: false }">
+                        <button @click="open = !open" class="p-2.5 rounded-xl text-gray-500 hover:text-orange-600 hover:bg-orange-50 transition" title="{{ __('Language') }}">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </button>
+                        <div x-show="open" @click.away="open = false" class="absolute right-0 mt-2 w-32 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-50" x-cloak>
+                            <a href="{{ url('language/en') }}" class="block px-4 py-2.5 text-sm {{ app()->getLocale() === 'en' ? 'text-orange-600 font-semibold' : 'text-gray-700 hover:bg-orange-50 hover:text-orange-600' }} transition">English</a>
+                            <a href="{{ url('language/km') }}" class="block px-4 py-2.5 text-sm {{ app()->getLocale() === 'km' ? 'text-orange-600 font-semibold' : 'text-gray-700 hover:bg-orange-50 hover:text-orange-600' }} transition">ភាសាខ្មែរ</a>
+                        </div>
+                    </div>
+                    @auth
+                        <div class="relative" x-data="{ open: false }">
+                            <button @click="open = !open" class="flex items-center gap-2 px-3 py-2 rounded-xl text-gray-700 hover:text-orange-600 hover:bg-orange-50 transition">
+                                <div class="w-7 h-7 bg-orange-100 rounded-full flex items-center justify-center">
+                                    <span class="text-xs font-bold text-orange-600">{{ substr(auth()->user()->name, 0, 1) }}</span>
+                                </div>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                            </button>
+                            <div x-show="open" @click.away="open = false" class="absolute right-0 mt-2 w-52 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-50" x-cloak>
+                                <div class="px-4 py-2 border-b border-gray-100">
+                                    <p class="text-sm font-medium text-gray-900 truncate">{{ auth()->user()->name }}</p>
+                                    <p class="text-xs text-gray-500 truncate">{{ auth()->user()->email }}</p>
+                                </div>
+                                <a href="/my-account" class="block px-4 py-2.5 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition">{{ __('My Account') }}</a>
+                                <a href="/order/track" class="block px-4 py-2.5 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition">{{ __('Track Order') }}</a>
+                                <form action="/logout" method="POST">
+                                    @csrf
+                                    <button type="submit" class="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition">{{ __('Sign Out') }}</button>
+                                </form>
+                            </div>
+                        </div>
+                    @else
+                        <a href="{{ route('login') }}" class="px-3 py-2 text-sm font-semibold text-gray-700 hover:text-orange-600 hover:bg-orange-50 rounded-xl transition whitespace-nowrap">{{ __('Sign In') }}</a>
+                        <a href="{{ route('register') }}" class="px-3 py-2 text-sm font-semibold bg-gray-900 text-white rounded-xl hover:bg-orange-600 transition whitespace-nowrap">{{ __('Register') }}</a>
+                    @endauth
                 </nav>
+                <div class="flex md:hidden items-center gap-1">
+                    <button @click="searchOpen = !searchOpen; if(searchOpen) { $nextTick(() => $el.nextElementSibling.querySelector('input').focus()) }" class="p-2.5 rounded-xl text-gray-500 hover:text-orange-600 hover:bg-orange-50 transition" title="{{ __('Search') }}">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    </button>
+                    <button @click="mobileOpen = !mobileOpen" class="p-2.5 rounded-xl text-gray-500 hover:text-orange-600 hover:bg-orange-50 transition">
+                        <svg x-show="!mobileOpen" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                        <svg x-show="mobileOpen" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </button>
+                </div>
             </div>
         </div>
 
