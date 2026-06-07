@@ -68,3 +68,11 @@ Route::middleware(['web'])->group(function () {
     Route::get('/payment/cancel', [PaymentController::class, 'cancel'])->name('payment.cancel');
     Route::post('/payment/webhook', [PaymentController::class, 'webhook'])->name('payment.webhook');
 });
+
+Route::get('/storage/{path}', function (string $path) {
+    $fullPath = public_path('storage/' . $path);
+    if (!file_exists($fullPath)) {
+        abort(404);
+    }
+    return response()->file($fullPath);
+})->where('path', '.*');
