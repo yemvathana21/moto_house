@@ -25,3 +25,12 @@ _ide_helper.php
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# Security & junk files
+/token.txt
+/env.txt
+/pubspec.yaml
+/assets/
+
+# SQL dumps
+database/motohouse.sql

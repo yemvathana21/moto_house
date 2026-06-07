@@ -1,5 +1,0 @@
-import 'package:khqr_sdk/khqr_sdk.dart';
-
-dependencies:
-  khqr_sdk: ^1.0.2
-
