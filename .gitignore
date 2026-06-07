@@ -31,5 +31,8 @@ Thumbs.db
 /pubspec.yaml
 /assets/
 
+# Livewire temp uploads
+/public/storage/livewire-tmp/*
+
 # SQL dumps
 database/motohouse.sql

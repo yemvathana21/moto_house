@@ -21,8 +21,8 @@
         }
     ],
     "env": {
-        "APP_ENV": "local",
-        "APP_DEBUG": "true",
+        "APP_ENV": "production",
+        "APP_DEBUG": "false",
         "APP_URL": "https://motohouse.vercel.app",
         "APP_KEY": "base64:H/p49zJNoRFWvT1smTOqInir9oK3Jrhw+da7/5sloFo=",
 
