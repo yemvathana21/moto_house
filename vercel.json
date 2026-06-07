@@ -35,6 +35,8 @@
 
         "CACHE_DRIVER": "array",
         "LOG_CHANNEL": "stderr",
-        "SESSION_DRIVER": "cookie"
+        "SESSION_DRIVER": "database",
+        "SESSION_SECURE_COOKIE": "true",
+        "SESSION_ENCRYPT": "true"
     }
 }
