@@ -31,7 +31,7 @@
                  @mousemove="pos = { x: (($event.offsetX / $el.offsetWidth) * 100), y: (($event.offsetY / $el.offsetHeight) * 100) }">
                 <div class="aspect-square bg-gray-50 rounded-2xl overflow-hidden cursor-crosshair">
                     @if ($product->images && count($product->images) > 0)
-                        <img src="{{ asset('storage/' . $product->images[0]) }}" alt="{{ $product->name }}" class="w-full h-full object-cover select-none">
+                        <img src="{{ Storage::url($product->images[0]) }}" alt="{{ $product->name }}" class="w-full h-full object-cover select-none">
                     @else
                         <div class="w-full h-full flex items-center justify-center text-gray-300">
                             <svg class="w-32 h-32" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -42,7 +42,7 @@
                 </div>
                 <template x-if="zoom && imgNatural.w > 0">
                     <div class="absolute inset-0 hidden md:block pointer-events-none"
-                         :style="'background-image: url({{ asset('storage/' . ($product->images[0] ?? '')) }}); background-size: ' + (imgNatural.w * 2) + 'px ' + (imgNatural.h * 2) + 'px; background-position: ' + pos.x + '% ' + pos.y + '%; border-radius: 1rem;'">
+                         :style="'background-image: url({{ Storage::url($product->images[0] ?? '') }}); background-size: ' + (imgNatural.w * 2) + 'px ' + (imgNatural.h * 2) + 'px; background-position: ' + pos.x + '% ' + pos.y + '%; border-radius: 1rem;'">
                     </div>
                 </template>
                 <div class="absolute top-4 right-4">
@@ -54,9 +54,9 @@
                 @if ($product->images && count($product->images) > 1)
                     <div class="absolute bottom-4 left-4 right-4 flex gap-2 justify-center">
                         @foreach ($product->images as $i => $img)
-                            <button @click="$el.closest('[x-data]').querySelector('img').src = '{{ asset('storage') }}/' + '{{ $img }}'"
+                            <button @click="$el.closest('[x-data]').querySelector('img').src = '{{ Storage::url($img) }}'"
                                     class="w-12 h-12 rounded-lg border-2 overflow-hidden transition {{ $i === 0 ? 'border-orange-500' : 'border-white/80' }} hover:border-orange-400 bg-white shadow-sm">
-                                <img src="{{ asset('storage/' . $img) }}" class="w-full h-full object-cover">
+                                <img src="{{ Storage::url($img) }}" class="w-full h-full object-cover">
                             </button>
                         @endforeach
                     </div>

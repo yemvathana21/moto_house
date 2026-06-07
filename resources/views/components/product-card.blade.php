@@ -3,7 +3,7 @@
     <div class="relative aspect-square bg-gray-50 overflow-hidden">
         <a href="/shop/{{ $product->slug }}">
             @if ($product->images && count($product->images) > 0)
-                <img src="{{ asset('storage/' . $product->images[0]) }}" alt="{{ $product->name }}" class="w-full h-full object-cover group-hover:scale-102 transition-transform duration-500">
+                <img src="{{ Storage::url($product->images[0]) }}" alt="{{ $product->name }}" class="w-full h-full object-cover group-hover:scale-102 transition-transform duration-500">
             @else
                 <div class="w-full h-full flex items-center justify-center text-gray-300">
                     <svg class="w-20 h-20" fill="none" stroke="currentColor" viewBox="0 0 24 24">

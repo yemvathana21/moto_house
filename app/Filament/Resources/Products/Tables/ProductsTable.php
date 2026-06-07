@@ -19,7 +19,6 @@ class ProductsTable
         return $table
             ->columns([
                 ImageColumn::make('images')
-                    ->disk('public')
                     ->circular()
                     ->limit(1),
                 TextColumn::make('name')

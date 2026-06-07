@@ -20,7 +20,7 @@
                     <div class="flex items-center gap-4 p-5">
                         <div class="w-20 h-20 bg-gray-50 rounded-xl overflow-hidden shrink-0">
                             @if ($item['image'])
-                                <img src="{{ asset('storage/' . $item['image']) }}" alt="{{ $item['name'] }}" class="w-full h-full object-cover">
+                                <img src="{{ Storage::url($item['image']) }}" alt="{{ $item['name'] }}" class="w-full h-full object-cover">
                             @else
                                 <div class="w-full h-full flex items-center justify-center text-gray-300">
                                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">

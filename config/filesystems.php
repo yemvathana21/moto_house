@@ -47,6 +47,17 @@ return [
             'report' => false,
         ],
 
+        'vercel-blob' => [
+            'driver' => 'vercel-blob',
+            'store_id' => env('BLOB_STORE_ID'),
+            'token' => env('BLOB_READ_WRITE_TOKEN'),
+            'public_url' => env('BLOB_PUBLIC_URL'),
+            'endpoint' => env('BLOB_ENDPOINT', 'https://blob.vercel-storage.com'),
+            'api_url' => env('BLOB_API_URL', 'https://vercel.com/api/blob'),
+            'throw' => false,
+            'report' => false,
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

@@ -73,7 +73,6 @@ class ProductForm
                         FileUpload::make('images')
                             ->multiple()
                             ->image()
-                            ->disk('public')
                             ->directory('products')
                             ->reorderable()
                             ->columnSpanFull(),

@@ -18,7 +18,6 @@ class BannersTable
         return $table
             ->columns([
                 ImageColumn::make('image')
-                    ->disk('public')
                     ->square()
                     ->size(60),
                 TextColumn::make('title')

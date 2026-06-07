@@ -51,7 +51,7 @@
                             <template x-for="p in results" :key="p.id">
                                 <a :href="'/shop/' + p.slug" @click="showInput = false" class="flex items-center gap-3 px-4 py-2.5 hover:bg-orange-50 transition">
                                     <div class="w-10 h-10 rounded-lg bg-gray-100 overflow-hidden shrink-0">
-                                        <img :src="p.image ? '{{ asset('storage') }}/' + p.image : ''" class="w-full h-full object-cover">
+                                        <img :src="p.image ? '{{ Storage::url('') }}' + p.image : ''" class="w-full h-full object-cover">
                                     </div>
                                     <div class="min-w-0 flex-1">
                                         <p class="text-sm font-medium text-gray-900 truncate" x-text="p.name"></p>
@@ -157,7 +157,7 @@
                     <template x-for="p in results" :key="p.id">
                         <a :href="'/shop/' + p.slug" @click="searchOpen = false" class="flex items-center gap-3 px-4 py-2.5 hover:bg-orange-50 transition">
                             <div class="w-10 h-10 rounded-lg bg-gray-100 overflow-hidden shrink-0">
-                                <img :src="p.image ? '{{ asset('storage') }}/' + p.image : ''" class="w-full h-full object-cover">
+                                <img :src="p.image ? '{{ Storage::url('') }}' + p.image : ''" class="w-full h-full object-cover">
                             </div>
                             <div class="min-w-0 flex-1">
                                 <p class="text-sm font-medium text-gray-900 truncate" x-text="p.name"></p>

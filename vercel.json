@@ -37,6 +37,11 @@
         "LOG_CHANNEL": "stderr",
         "SESSION_DRIVER": "database",
         "SESSION_SECURE_COOKIE": "true",
-        "SESSION_ENCRYPT": "true"
+        "SESSION_ENCRYPT": "true",
+
+        "FILESYSTEM_DISK": "vercel-blob",
+        "BLOB_STORE_ID": "store_WR07HIIv9aQOQx1B",
+        "BLOB_READ_WRITE_TOKEN": "vercel_blob_rw_WR07HIIv9aQOQx1B_hNwGffI77z9JvXubwY4KBLxLZV7Wyf",
+        "BLOB_PUBLIC_URL": "https://wr07hiiv9aqoqx1b.public.blob.vercel-storage.com"
     }
 }

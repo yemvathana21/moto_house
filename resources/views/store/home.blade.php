@@ -5,7 +5,7 @@
                 @foreach ($banners as $banner)
                     <div class="banner-slide {{ $loop->first ? 'block' : 'hidden' }}">
                         <div class="relative h-[300px] md:h-[560px]">
-                            <img src="{{ asset('storage/' . $banner->image) }}" alt="{{ $banner->title }}" class="w-full h-full object-cover">
+                            <img src="{{ Storage::url($banner->image) }}" alt="{{ $banner->title }}" class="w-full h-full object-cover">
                             <div class="absolute inset-0 bg-gradient-to-r from-gray-950/80 via-gray-950/50 to-transparent"></div>
                             <div class="absolute inset-0 flex items-center">
                                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
@@ -91,7 +91,7 @@
                 @foreach ($categories as $category)
                     <a href="/shop?category_id={{ $category->id }}" class="group relative bg-white rounded-2xl border border-gray-100 p-4 md:p-6 text-center hover:border-orange-200 hover:shadow-xl hover:shadow-orange-500/5 transition-all duration-300">
                         @if ($category->image)
-                            <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" class="w-14 h-14 md:w-20 md:h-20 object-cover rounded-2xl mx-auto mb-3 md:mb-4 group-hover:scale-110 transition-transform duration-300">
+                            <img src="{{ Storage::url($category->image) }}" alt="{{ $category->name }}" class="w-14 h-14 md:w-20 md:h-20 object-cover rounded-2xl mx-auto mb-3 md:mb-4 group-hover:scale-110 transition-transform duration-300">
                         @else
                             <div class="w-14 h-14 md:w-20 md:h-20 bg-gradient-to-br from-orange-50 to-orange-100 rounded-2xl mx-auto mb-3 md:mb-4 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                                 <svg class="w-9 h-9 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">

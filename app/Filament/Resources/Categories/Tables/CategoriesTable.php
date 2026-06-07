@@ -18,7 +18,6 @@ class CategoriesTable
             ->columns([
                 ImageColumn::make('image') 
                     ->label('Images')
-                    ->disk('public')
                     ->circular(),
                 TextColumn::make('name')
                     ->searchable()

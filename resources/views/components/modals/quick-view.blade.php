@@ -107,7 +107,7 @@ function quickViewModal() {
                 this.product = {
                     ...data,
                     image: data.images?.length > 0
-                        ? '{{ asset('storage') }}/' + data.images[0]
+                        ? '{{ Storage::url('') }}' + data.images[0]
                         : ''
                 };
             } catch (e) {

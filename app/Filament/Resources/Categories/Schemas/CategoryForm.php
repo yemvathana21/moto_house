@@ -39,7 +39,6 @@ class CategoryForm
                     ->columnSpanFull(),
                 FileUpload::make('image')
                     ->image()
-                    ->disk('public')
                     ->directory('categories'),
                 Toggle::make('is_active')
                     ->default(true),
