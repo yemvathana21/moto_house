@@ -3,7 +3,7 @@
     <div class="relative aspect-square bg-gray-50 overflow-hidden">
         <a href="/shop/{{ $product->slug }}">
             @if ($product->images && count($product->images) > 0)
-                <img src="{{ asset('storage/' . $product->images[0]) }}" alt="{{ $product->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                <img src="{{ asset('storage/' . $product->images[0]) }}" alt="{{ $product->name }}" class="w-full h-full object-cover group-hover:scale-102 transition-transform duration-500">
             @else
                 <div class="w-full h-full flex items-center justify-center text-gray-300">
                     <svg class="w-20 h-20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -46,12 +46,21 @@
                 <span class="text-[9px] md:text-xs bg-red-50 text-red-600 px-1.5 md:px-2 py-0.5 rounded-full font-semibold whitespace-nowrap">{{ __('Only') }} {{ $product->stock_quantity }} {{ __('left') }}</span>
             @endif
         </div>
-        <form action="/cart/add/{{ $product->id }}" method="POST" class="mt-2 md:mt-4">
-            @csrf
-            <button type="submit" {{ $product->stock_quantity < 1 ? 'disabled' : '' }} class="w-full py-2 md:py-2.5 bg-gray-900 text-white text-[11px] md:text-sm font-semibold rounded-lg md:rounded-xl hover:bg-orange-600 transition disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-1 md:gap-2">
-                <svg class="w-3.5 h-3.5 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/></svg>
-                {{ __('Add to Cart') }}
-            </button>
-        </form>
+        <div class="mt-2 md:mt-4 flex gap-2">
+            <form action="/cart/add/{{ $product->id }}" method="POST" class="flex-1">
+                @csrf
+                <button type="submit" {{ $product->stock_quantity < 1 ? 'disabled' : '' }} class="w-full py-2 md:py-2.5 bg-gray-900 text-white text-[11px] md:text-sm font-semibold rounded-lg md:rounded-xl hover:bg-orange-600 transition disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-1 md:gap-2">
+                    <svg class="w-3.5 h-3.5 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/></svg>
+                    {{ __('Cart') }}
+                </button>
+            </form>
+            <form action="/buy-now/{{ $product->id }}" method="POST" class="flex-1">
+                @csrf
+                <button type="submit" {{ $product->stock_quantity < 1 ? 'disabled' : '' }} class="w-full py-2 md:py-2.5 bg-orange-600 text-white text-[11px] md:text-sm font-semibold rounded-lg md:rounded-xl hover:bg-orange-700 transition disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-1 md:gap-2">
+                    <svg class="w-3.5 h-3.5 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    {{ __('Buy Now') }}
+                </button>
+            </form>
+        </div>
     </div>
 </div>

@@ -27,6 +27,7 @@ Route::post('/shop/{slug}/review', [ShopController::class, 'storeReview'])->midd
 Route::post('/shop/{slug}/review/{review}/reply', [ShopController::class, 'storeReply'])->middleware('auth');
 
 Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
+Route::post('/buy-now/{product}', [CartController::class, 'buyNow'])->name('buy-now');
 Route::post('/cart/update/{product}', [CartController::class, 'update'])->name('cart.update');
 Route::post('/cart/remove/{product}', [CartController::class, 'remove'])->name('cart.remove');
 Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');

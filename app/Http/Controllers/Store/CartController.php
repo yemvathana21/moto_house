@@ -77,6 +77,26 @@ class CartController extends Controller
         return back();
     }
 
+    public function buyNow(Product $product)
+    {
+        session()->put('cart', []);
+        session()->put('cart.' . $product->id, [
+            'id' => $product->id,
+            'name' => $product->name,
+            'price' => (float) $product->price,
+            'image' => $product->images[0] ?? null,
+            'quantity' => 1,
+        ]);
+
+        if (auth()->check()) {
+            session()->put('cart_email', auth()->user()->email);
+        }
+
+        $this->dispatchCartUpdated();
+
+        return redirect('/checkout');
+    }
+
     private function dispatchCartUpdated(): void
     {
         if (class_exists(\Livewire\Livewire::class)) {

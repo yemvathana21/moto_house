@@ -112,6 +112,13 @@
                             {{ __('Add to Cart') }}
                         </button>
                     </form>
+                    <form action="/buy-now/{{ $product->id }}" method="POST" class="flex-1">
+                        @csrf
+                        <button type="submit" {{ $product->stock_quantity < 1 ? 'disabled' : '' }} class="w-full px-8 py-3.5 bg-orange-600 text-white font-semibold rounded-xl hover:bg-orange-700 transition disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-lg">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                            {{ __('Buy Now') }}
+                        </button>
+                    </form>
                 </div>
 
                 @if ($product->specifications)
