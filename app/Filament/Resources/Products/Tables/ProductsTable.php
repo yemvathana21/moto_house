@@ -21,7 +21,6 @@ class ProductsTable
                 ImageColumn::make('images')
                     ->disk('public')
                     ->circular()
-                    ->stacked()
                     ->limit(1),
                 TextColumn::make('name')
                     ->searchable()
