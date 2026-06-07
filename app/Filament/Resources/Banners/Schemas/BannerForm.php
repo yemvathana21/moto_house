@@ -42,6 +42,7 @@ class BannerForm
                 FileUpload::make('image')
                     ->image()
                     ->required()
+                    ->disk('public')
                     ->directory('banners')
                     ->columnSpanFull(),
             ]);

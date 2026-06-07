@@ -77,6 +77,7 @@ class ManageSettings extends Page implements HasForms
                         FileUpload::make('logo')
                             ->label('Site Logo')
                             ->image()
+                            ->disk('public')
                             ->directory('settings'),
                     ]),
             ])
