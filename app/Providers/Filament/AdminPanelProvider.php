@@ -96,6 +96,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->authGuard('admin')
             ->brandName('Moto House')
             ->brandLogoHeight('3rem')
             ->colors([
