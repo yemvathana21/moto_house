@@ -21,6 +21,8 @@ Route::get('/', HomeController::class);
 Route::redirect('/about-us', '/page/about-us');
 Route::get('/shop', ShopController::class);
 Route::get('/shop/{slug}', [ShopController::class, 'show']);
+Route::get('/quick-view/{product}', [ShopController::class, 'quickView']);
+Route::get('/live-search', [ShopController::class, 'liveSearch']);
 Route::post('/shop/{slug}/review', [ShopController::class, 'storeReview'])->middleware('auth');
 Route::post('/shop/{slug}/review/{review}/reply', [ShopController::class, 'storeReply'])->middleware('auth');
 

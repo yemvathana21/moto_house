@@ -1,22 +1,37 @@
 <x-layouts.store title="{{ $product->name }}">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <nav class="flex items-center gap-2 text-sm text-gray-500 mb-8">
-            <a href="/" class="hover:text-orange-600 transition">{{ __('Home') }}</a>
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-            <a href="/shop" class="hover:text-orange-600 transition">{{ __('Shop') }}</a>
+        <nav class="flex items-center gap-2 text-sm text-gray-500 mb-8 overflow-x-auto" itemscope itemtype="https://schema.org/BreadcrumbList">
+            <span itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                <a href="/" itemprop="item" class="hover:text-orange-600 transition whitespace-nowrap"><span itemprop="name">{{ __('Home') }}</span></a>
+                <meta itemprop="position" content="1">
+            </span>
+            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            <span itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                <a href="/shop" itemprop="item" class="hover:text-orange-600 transition whitespace-nowrap"><span itemprop="name">{{ __('Shop') }}</span></a>
+                <meta itemprop="position" content="2">
+            </span>
             @if ($product->category)
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                <a href="/shop?category_id={{ $product->category->id }}" class="hover:text-orange-600 transition">{{ $product->category->name }}</a>
+                <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                <span itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    <a href="/shop?category_id={{ $product->category->id }}" itemprop="item" class="hover:text-orange-600 transition whitespace-nowrap"><span itemprop="name">{{ $product->category->name }}</span></a>
+                    <meta itemprop="position" content="3">
+                </span>
             @endif
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-            <span class="text-gray-900 font-medium truncate">{{ $product->name }}</span>
+            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            <span itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                <span itemprop="name" class="text-gray-900 font-medium truncate">{{ $product->name }}</span>
+                <meta itemprop="position" content="4">
+            </span>
         </nav>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12">
-            <div class="relative">
-                <div class="aspect-square bg-gray-50 rounded-2xl overflow-hidden">
+            <div class="relative" x-data="{ zoom: false, pos: { x: 0, y: 0 }, imgNatural: { w: 0, h: 0 } }"
+                 @mouseenter="zoom = true; $nextTick(() => { const img = $el.querySelector('img'); imgNatural = { w: img.naturalWidth, h: img.naturalHeight }; })"
+                 @mouseleave="zoom = false"
+                 @mousemove="pos = { x: (($event.offsetX / $el.offsetWidth) * 100), y: (($event.offsetY / $el.offsetHeight) * 100) }">
+                <div class="aspect-square bg-gray-50 rounded-2xl overflow-hidden cursor-crosshair">
                     @if ($product->images && count($product->images) > 0)
-                        <img src="{{ asset('storage/' . $product->images[0]) }}" alt="{{ $product->name }}" class="w-full h-full object-cover">
+                        <img src="{{ asset('storage/' . $product->images[0]) }}" alt="{{ $product->name }}" class="w-full h-full object-cover select-none">
                     @else
                         <div class="w-full h-full flex items-center justify-center text-gray-300">
                             <svg class="w-32 h-32" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -25,24 +40,40 @@
                         </div>
                     @endif
                 </div>
+                <template x-if="zoom && imgNatural.w > 0">
+                    <div class="absolute inset-0 hidden md:block pointer-events-none"
+                         :style="'background-image: url({{ asset('storage/' . ($product->images[0] ?? '')) }}); background-size: ' + (imgNatural.w * 2) + 'px ' + (imgNatural.h * 2) + 'px; background-position: ' + pos.x + '% ' + pos.y + '%; border-radius: 1rem;'">
+                    </div>
+                </template>
                 <div class="absolute top-4 right-4">
                     @livewire('wishlist-button', ['productId' => $product->id], key('wishlist-' . $product->id))
                 </div>
                 @if ($product->compare_price)
                     <span class="absolute top-4 left-4 bg-red-500 text-white text-sm font-bold px-3 py-1.5 rounded-lg">{{ __('SALE') }}</span>
                 @endif
+                @if ($product->images && count($product->images) > 1)
+                    <div class="absolute bottom-4 left-4 right-4 flex gap-2 justify-center">
+                        @foreach ($product->images as $i => $img)
+                            <button @click="$el.closest('[x-data]').querySelector('img').src = '{{ asset('storage') }}/' + '{{ $img }}'"
+                                    class="w-12 h-12 rounded-lg border-2 overflow-hidden transition {{ $i === 0 ? 'border-orange-500' : 'border-white/80' }} hover:border-orange-400 bg-white shadow-sm">
+                                <img src="{{ asset('storage/' . $img) }}" class="w-full h-full object-cover">
+                            </button>
+                        @endforeach
+                    </div>
+                @endif
             </div>
             <div class="md:pt-4">
                 @if ($product->brand)
                     <p class="text-sm text-orange-600 font-semibold uppercase tracking-[0.15em] mb-2">{{ $product->brand }}</p>
                 @endif
-                <h1 class="text-2xl md:text-4xl font-bold text-gray-900 leading-tight mb-3 md:mb-4">{{ $product->name }}</h1>
+                <h1 class="text-2xl md:text-4xl font-bold text-gray-900 leading-tight mb-3 md:mb-4" itemprop="name">{{ $product->name }}</h1>
 
-                <div class="flex items-baseline gap-3 mb-4">
-                    <span class="text-4xl font-extrabold text-orange-600">${{ number_format($product->price, 2) }}</span>
+                <div class="flex items-baseline gap-3 mb-4" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+                    <span class="text-4xl font-extrabold text-orange-600" itemprop="price" content="{{ $product->price }}">${{ number_format($product->price, 2) }}</span>
+                    <meta itemprop="priceCurrency" content="USD">
                     @if ($product->compare_price)
                         <span class="text-xl text-gray-400 line-through">${{ number_format($product->compare_price, 2) }}</span>
-                        <span class="text-sm bg-red-50 text-red-600 px-2.5 py-1 rounded-lg font-semibold">Save ${{ number_format($product->compare_price - $product->price, 2) }}</span>
+                        <span class="text-sm bg-red-50 text-red-600 px-2.5 py-1 rounded-lg font-semibold">{{ __('Save') }} ${{ number_format($product->compare_price - $product->price, 2) }}</span>
                     @endif
                 </div>
 
@@ -99,6 +130,31 @@
             </div>
         </div>
 
+        @if ($relatedProducts->count())
+            <section class="mt-16">
+                <h2 class="text-2xl font-bold text-gray-900 mb-8">{{ __('Related Products') }}</h2>
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+                    @foreach ($relatedProducts as $rp)
+                        <x-product-card :product="$rp" />
+                    @endforeach
+                </div>
+            </section>
+        @endif
+
+        @if ($recentProducts->count())
+            <section class="mt-12">
+                <h2 class="text-2xl font-bold text-gray-900 mb-8 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    {{ __('Recently Viewed') }}
+                </h2>
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+                    @foreach ($recentProducts as $rp)
+                        <x-product-card :product="$rp" />
+                    @endforeach
+                </div>
+            </section>
+        @endif
+
         <section class="mt-16">
             <h2 class="text-2xl font-bold text-gray-900 mb-8">{{ __('Customer Reviews') }}</h2>
             @if ($reviews->count())
@@ -125,11 +181,11 @@
                             @if ($review->replies->count())
                                 <div class="mt-4 space-y-3 pl-6 border-l-2 border-orange-100">
                                     @foreach ($review->replies as $reply)
-                        <div class="bg-orange-50 rounded-xl p-4">
-                            <div class="flex items-center gap-2 mb-1">
-                                <span class="text-xs font-semibold text-orange-700 bg-orange-200 px-2 py-0.5 rounded-full">{{ $reply->customer_name }}</span>
-                                <span class="text-xs text-gray-400">{{ $reply->created_at->format('M d, Y') }}</span>
-                            </div>
+                                        <div class="bg-orange-50 rounded-xl p-4">
+                                            <div class="flex items-center gap-2 mb-1">
+                                                <span class="text-xs font-semibold text-orange-700 bg-orange-200 px-2 py-0.5 rounded-full">{{ $reply->customer_name }}</span>
+                                                <span class="text-xs text-gray-400">{{ $reply->created_at->format('M d, Y') }}</span>
+                                            </div>
                                             <p class="text-sm text-gray-700">{{ $reply->comment }}</p>
                                         </div>
                                     @endforeach

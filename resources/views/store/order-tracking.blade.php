@@ -99,7 +99,39 @@
                         </div>
 
                         <div class="mt-8 pt-8 border-t border-gray-100">
-                            <h3 class="font-bold text-gray-900 mb-6">{{ __('Order Timeline') }}</h3>
+                            <h3 class="font-bold text-gray-900 mb-8">{{ __('Order Timeline') }}</h3>
+                            @php $statuses = ['pending' => 0, 'processing' => 1, 'shipped' => 2, 'delivered' => 3]; @endphp
+                            @if ($order->status !== 'cancelled')
+                                @php $current = $statuses[$order->status] ?? 0; @endphp
+                                <div class="flex items-center mb-10">
+                                    @foreach ([['pending', __('Order Placed')], ['processing', __('Processing')], ['shipped', __('Shipped')], ['delivered', __('Delivered')]] as $i => [$s, $label])
+                                        @php $done = $i <= $current; @endphp
+                                        <div class="flex-1 relative">
+                                            <div class="flex items-center">
+                                                <div class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold shrink-0 z-10
+                                                    {{ $done ? 'bg-orange-500 text-white' : 'bg-gray-200 text-gray-400' }}">
+                                                    @if ($done && $s === 'delivered')
+                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                                                    @elseif ($done)
+                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                                                    @else
+                                                        {{ $i + 1 }}
+                                                    @endif
+                                                </div>
+                                                @if ($i < 3)
+                                                    <div class="flex-1 h-1 -ml-1 -mr-1 {{ $i < $current ? 'bg-orange-500' : 'bg-gray-200' }}"></div>
+                                                @endif
+                                            </div>
+                                            <div class="mt-2 {{ $done ? 'text-gray-900' : 'text-gray-400' }}">
+                                                <p class="text-xs font-semibold">{{ $label }}</p>
+                                                @if ($i === 0)
+                                                    <p class="text-[10px] mt-0.5">{{ $order->created_at->format('M d') }}</p>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endif
                             <div class="relative pl-8 space-y-6 before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-0.5 before:bg-gray-200">
                                 <div class="relative">
                                     <div class="absolute -left-8 top-0.5 w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center">

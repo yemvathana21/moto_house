@@ -33,6 +33,10 @@ class CartController extends Controller
             ];
         }
 
+        if (auth()->check()) {
+            session()->put('cart_email', auth()->user()->email);
+        }
+
         session()->put('cart', $cart);
         $this->dispatchCartUpdated();
 

@@ -12,6 +12,33 @@ use Illuminate\Support\Facades\Auth;
 
 class ShopController extends Controller
 {
+    public function liveSearch()
+    {
+        $query = request('q');
+        if (!$query || strlen($query) < 2) {
+            return response()->json([]);
+        }
+        $products = Product::where('is_active', true)
+            ->where(function ($q) use ($query) {
+                $q->where('name', 'like', "%{$query}%")
+                  ->orWhere('brand', 'like', "%{$query}%");
+            })
+            ->limit(6)
+            ->get()
+            ->map(fn ($p) => [
+                'id' => $p->id,
+                'name' => $p->name,
+                'slug' => $p->slug,
+                'brand' => $p->brand,
+                'price' => (float) $p->price,
+                'compare_price' => (float) $p->compare_price,
+                'image' => $p->images[0] ?? null,
+                'stock' => $p->stock_quantity,
+            ]);
+
+        return response()->json($products);
+    }
+
     public function __invoke()
     {
         $query = Product::where('is_active', true);
@@ -53,6 +80,26 @@ class ShopController extends Controller
         return view('store.shop', compact('products', 'categories', 'brands'));
     }
 
+    public function quickView(Product $product)
+    {
+        $avgRating = $product->reviews()->approved()->avg('rating') ?? 0;
+        return response()->json([
+            'id' => $product->id,
+            'name' => $product->name,
+            'slug' => $product->slug,
+            'brand' => $product->brand,
+            'price' => (float) $product->price,
+            'compare_price' => (float) $product->compare_price,
+            'stock_quantity' => $product->stock_quantity,
+            'images' => $product->images ?? [],
+            'description' => $product->description,
+            'specifications' => $product->specifications ?? [],
+            'avgRating' => round($avgRating, 1),
+            'reviewsCount' => $product->reviews()->approved()->count(),
+            'category' => $product->category?->name,
+        ]);
+    }
+
     public function show(string $slug)
     {
         $product = Product::where('slug', $slug)->where('is_active', true)->firstOrFail();
@@ -64,7 +111,25 @@ class ShopController extends Controller
             ->get();
         $avgRating = $reviews->avg('rating');
         $reviewsCount = $reviews->count();
-        return view('store.product-detail', compact('product', 'reviews', 'avgRating', 'reviewsCount'));
+
+        $relatedProducts = Product::where('is_active', true)
+            ->where('id', '!=', $product->id)
+            ->where('category_id', $product->category_id)
+            ->inRandomOrder()
+            ->limit(4)
+            ->get();
+
+        $recentlyViewed = session()->get('recently_viewed', []);
+        $recentlyViewed = array_filter($recentlyViewed, fn ($id) => $id !== $product->id);
+        array_unshift($recentlyViewed, $product->id);
+        session()->put('recently_viewed', array_slice($recentlyViewed, 0, 8));
+
+        $recentProducts = Product::whereIn('id', session()->get('recently_viewed', []))
+            ->where('id', '!=', $product->id)
+            ->limit(4)
+            ->get();
+
+        return view('store.product-detail', compact('product', 'reviews', 'avgRating', 'reviewsCount', 'relatedProducts', 'recentProducts'));
     }
 
     public function storeReview(Request $request, string $slug)
