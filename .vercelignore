@@ -1,0 +1,14 @@
+.git
+.gitignore
+.env
+.env.*
+tests/
+storage/app/public
+storage/debugbar
+storage/logs
+database/*.sqlite
+node_modules/.cache
+**/*.md
+**/*.yml
+**/Makefile
+**/phpunit.xml*
