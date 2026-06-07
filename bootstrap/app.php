@@ -8,6 +8,10 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 return Application::configure(basePath: dirname(__DIR__))
 
     ->withMiddleware(function (Middleware $middleware) {
+        $middleware->web(prepend: [
+            \App\Http\Middleware\AdminSessionCookie::class,
+        ]);
+
         $middleware->web(append: [
             \App\Http\Middleware\SetLocale::class,
         ]);
