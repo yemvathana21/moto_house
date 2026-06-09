@@ -21,6 +21,7 @@
         }
     ],
     "env": {
+        "VERCEL_FORCE_NO_BUILD_CACHE": "1",
         "APP_ENV": "production",
         "APP_DEBUG": "false",
         "APP_URL": "https://motohouse.vercel.app",
