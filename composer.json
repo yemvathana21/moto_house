@@ -12,6 +12,7 @@
         "khqr-gateway/bakong-khqr-php": "1.0",
         "laravel/framework": "^13.8",
         "laravel/tinker": "^3.0",
+        "league/flysystem-aws-s3-v3": "3.0",
         "simplesoftwareio/simple-qrcode": "*",
         "spatie/laravel-permission": "^7.4"
     },
