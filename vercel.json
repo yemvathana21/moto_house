@@ -1,8 +1,9 @@
 {
     "version": 2,
     "framework": null,
-    "installCommand": "npm install && composer install --no-dev --optimize-autoloader --no-interaction",
+    "installCommand": "npm install",
     "buildCommand": "npm run vercel-build",
+    "outputDirectory": "public",
     "functions": {
         "api/index.php": { "runtime": "vercel-php@0.9.0", "maxDuration": 30 }
     },
@@ -42,6 +43,7 @@
         "FILESYSTEM_DISK": "vercel-blob",
         "BLOB_STORE_ID": "store_WR07HIIv9aQOQx1B",
         "BLOB_READ_WRITE_TOKEN": "vercel_blob_rw_WR07HIIv9aQOQx1B_hNwGffI77z9JvXubwY4KBLxLZV7Wyf",
-        "BLOB_PUBLIC_URL": "https://wr07hiiv9aqoqx1b.public.blob.vercel-storage.com"
+        "BLOB_PUBLIC_URL": "https://wr07hiiv9aqoqx1b.public.blob.vercel-storage.com",
+        "COMPOSER_FLAGS": "--no-dev --optimize-autoloader --no-interaction"
     }
 }
