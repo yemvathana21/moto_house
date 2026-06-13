@@ -25,5 +25,11 @@ class Page extends Model
                 $page->slug = Str::slug($page->title);
             }
         });
+
+        static::updating(function (Page $page) {
+            if (empty($page->slug)) {
+                $page->slug = Str::slug($page->title);
+            }
+        });
     }
 }

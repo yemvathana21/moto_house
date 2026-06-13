@@ -34,8 +34,9 @@ Thumbs.db
 # Livewire temp uploads
 /public/storage/livewire-tmp/*
 
-# SQL dumps
+# SQL dumps & SQLite
 database/motohouse.sql
+database/database.sqlite
 
 admin_test.html
 .vercel

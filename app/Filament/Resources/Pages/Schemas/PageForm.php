@@ -22,9 +22,9 @@ class PageForm
                             ->required()
                             ->maxLength(255),
                         TextInput::make('slug')
-                            ->required()
                             ->maxLength(255)
-                            ->unique(ignoreRecord: true),
+                            ->unique(ignoreRecord: true)
+                            ->helperText('Leave empty to auto-generate from title.'),
                         TextInput::make('meta_title')
                             ->label('Meta Title')
                             ->maxLength(255),
