@@ -23,7 +23,7 @@ class AbandonedCart extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'You left something in your cart! - Moto House',
+            subject: 'You left something in your cart!!! - Moto House',
         );
     }
 
