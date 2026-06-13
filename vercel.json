@@ -40,9 +40,9 @@
         "CACHE_DRIVER": "array",
         "CACHE_STORE": "array",
         "LOG_CHANNEL": "stderr",
-        "SESSION_DRIVER": "array",
+        "SESSION_DRIVER": "cookie",
         "SESSION_SECURE_COOKIE": "true",
-        "SESSION_ENCRYPT": "false",
+        "SESSION_ENCRYPT": "true",
         "QUEUE_CONNECTION": "sync",
 
         "FILESYSTEM_DISK": "vercel-blob",
