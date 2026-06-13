@@ -8,6 +8,31 @@ if (isset($_SERVER['VERCEL_REQUEST_URL'])) {
     $_SERVER['REQUEST_URI'] = $_SERVER['VERCEL_REQUEST_URL'];
 }
 
+// Restore SQLite database from Vercel Blob if not already in /tmp/
+$dbPath = '/tmp/database.sqlite';
+if (!file_exists($dbPath) && getenv('DB_CONNECTION') === 'sqlite') {
+    $publicUrl = getenv('BLOB_PUBLIC_URL');
+    $storeId = getenv('BLOB_STORE_ID');
+    $token = getenv('BLOB_READ_WRITE_TOKEN');
+    $blobUrl = rtrim($publicUrl ?: '', '/') . '/' . ($storeId ?: '') . '/moto-house-blob';
+
+    if (filter_var($blobUrl, FILTER_VALIDATE_URL)) {
+        $ch = curl_init($blobUrl);
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_TIMEOUT => 15,
+        ]);
+        $content = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        if ($httpCode === 200 && $content !== false) {
+            file_put_contents($dbPath, $content);
+        }
+    }
+}
+
 // Serve static files directly from public/ before booting Laravel
 $publicPath = __DIR__ . '/../public';
 $requestUri = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
