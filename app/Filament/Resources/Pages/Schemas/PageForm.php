@@ -22,6 +22,7 @@ class PageForm
                             ->required()
                             ->maxLength(255),
                         TextInput::make('slug')
+                            ->required()
                             ->maxLength(255)
                             ->unique(ignoreRecord: true)
                             ->helperText('Leave empty to auto-generate from title.'),

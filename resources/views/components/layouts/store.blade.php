@@ -232,8 +232,8 @@
                     <h4 class="text-white font-semibold mb-4 text-sm uppercase tracking-wider">{{ __('Support') }}</h4>
                     <ul class="space-y-3 text-sm">
                         <li><a href="/contact" class="hover:text-white transition">{{ __('Contact Us') }}</a></li>
-                        <li><a href="#" class="hover:text-white transition">{{ __('Shipping Info') }}</a></li>
-                        <li><a href="#" class="hover:text-white transition">{{ __('Returns & Exchanges') }}</a></li>
+                        <li><a href="/page/shipping-policy" class="hover:text-white transition">{{ __('Shipping Info') }}</a></li>
+                        <li><a href="/page/returns-exchanges" class="hover:text-white transition">{{ __('Returns & Exchanges') }}</a></li>
                         <li><a href="/order/track" class="hover:text-white transition">{{ __('Track Order') }}</a></li>
                     </ul>
                 </div>
@@ -254,8 +254,8 @@
             <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm">
                 <p>&copy; {{ date('Y') }} {{ __('Moto House') }}. {{ __('All rights reserved.') }}</p>
                 <div class="flex items-center gap-6">
-                    <a href="#" class="hover:text-white transition">{{ __('Privacy Policy') }}</a>
-                    <a href="#" class="hover:text-white transition">{{ __('Terms of Service') }}</a>
+                    <a href="/page/privacy-policy" class="hover:text-white transition">{{ __('Privacy Policy') }}</a>
+                    <a href="/page/terms-of-service" class="hover:text-white transition">{{ __('Terms of Service') }}</a>
                 </div>
             </div>
         </div>
