@@ -39,6 +39,8 @@ class Register extends Component
             'password' => Hash::make($this->password),
         ]);
 
+        $user->assignRole('customer');
+
         event(new Registered($user));
 
         Auth::login($user);
