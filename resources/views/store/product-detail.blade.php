@@ -25,42 +25,95 @@
         </nav>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12">
-            <div class="relative" x-data="{ zoom: false, pos: { x: 0, y: 0 }, imgNatural: { w: 0, h: 0 } }"
-                 @mouseenter="zoom = true; $nextTick(() => { const img = $el.querySelector('img'); imgNatural = { w: img.naturalWidth, h: img.naturalHeight }; })"
-                 @mouseleave="zoom = false"
-                 @mousemove="pos = { x: (($event.offsetX / $el.offsetWidth) * 100), y: (($event.offsetY / $el.offsetHeight) * 100) }">
-                <div class="aspect-square bg-gray-50 rounded-2xl overflow-hidden cursor-crosshair">
-                    @if ($product->images && count($product->images) > 0)
-                        <img src="{{ Storage::url($product->images[0]) }}" alt="{{ $product->name }}" class="w-full h-full object-cover select-none">
-                    @else
-                        <div class="w-full h-full flex items-center justify-center text-gray-300">
-                            <svg class="w-32 h-32" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                            </svg>
-                        </div>
-                    @endif
-                </div>
-                <template x-if="zoom && imgNatural.w > 0">
-                    <div class="absolute inset-0 hidden md:block pointer-events-none"
-                         :style="'background-image: url({{ Storage::url($product->images[0] ?? '') }}); background-size: ' + (imgNatural.w * 2) + 'px ' + (imgNatural.h * 2) + 'px; background-position: ' + pos.x + '% ' + pos.y + '%; border-radius: 1rem;'">
-                    </div>
-                </template>
-                <div class="absolute top-4 right-4">
-                    @livewire('wishlist-button', ['productId' => $product->id], key('wishlist-' . $product->id))
-                </div>
-                @if ($product->compare_price)
-                    <span class="absolute top-4 left-4 bg-red-500 text-white text-sm font-bold px-3 py-1.5 rounded-lg">{{ __('SALE') }}</span>
-                @endif
-                @if ($product->images && count($product->images) > 1)
-                    <div class="absolute bottom-4 left-4 right-4 flex gap-2 justify-center">
-                        @foreach ($product->images as $i => $img)
-                            <button @click="$el.closest('[x-data]').querySelector('img').src = '{{ Storage::url($img) }}'"
-                                    class="w-12 h-12 rounded-lg border-2 overflow-hidden transition {{ $i === 0 ? 'border-orange-500' : 'border-white/80' }} hover:border-orange-400 bg-white shadow-sm">
-                                <img src="{{ Storage::url($img) }}" class="w-full h-full object-cover">
+            @php
+                $galleryImages = $product->images ? array_map(fn($img) => Storage::url($img), $product->images) : [];
+            @endphp
+            <div class="relative"
+                 x-data="{
+                     activeImg: 0,
+                     lightbox: false,
+                     zoom: false,
+                     pos: { x: 0, y: 0 },
+                     imgNatural: { w: 0, h: 0 },
+                     images: {{ json_encode($galleryImages) }},
+                     get currentImage() { return this.images[this.activeImg] || '' }
+                 }">
+
+                <div class="flex gap-3">
+                    @if (count($galleryImages) > 1)
+                    <div class="flex flex-row md:flex-col gap-2 order-1 md:order-none overflow-x-auto md:overflow-x-visible shrink-0">
+                        @foreach ($galleryImages as $i => $img)
+                            <button @click="activeImg = {{ $i }}"
+                                    :class="{ 'border-orange-500 ring-2 ring-orange-200': activeImg === {{ $i }}, 'border-gray-200': activeImg !== {{ $i }} }"
+                                    class="w-14 h-14 md:w-16 md:h-16 rounded-lg border-2 overflow-hidden shrink-0 bg-white shadow-sm hover:border-orange-300 transition-all">
+                                <img src="{{ $img }}" class="w-full h-full object-cover" loading="lazy">
                             </button>
                         @endforeach
                     </div>
+                    @endif
+
+                    <div class="flex-1 aspect-square bg-gray-50 rounded-2xl overflow-hidden cursor-crosshair relative"
+                         @mouseenter="zoom = true; $nextTick(() => { const img = $el.querySelector('img'); if (img) { imgNatural = { w: img.naturalWidth, h: img.naturalHeight }; } })"
+                         @mouseleave="zoom = false"
+                         @mousemove="pos = { x: (($event.offsetX / $el.offsetWidth) * 100), y: (($event.offsetY / $el.offsetHeight) * 100) }">
+                        <template x-if="currentImage">
+                            <img :src="currentImage" alt="{{ $product->name }}"
+                                 class="w-full h-full object-cover select-none"
+                                 @click="lightbox = true">
+                        </template>
+                        <template x-if="!currentImage">
+                            <div class="w-full h-full flex items-center justify-center text-gray-300">
+                                <svg class="w-32 h-32" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                </svg>
+                            </div>
+                        </template>
+                        <template x-if="zoom && imgNatural.w > 0 && currentImage">
+                            <div class="absolute inset-0 hidden md:block pointer-events-none"
+                                 :style="'background-image: url(' + currentImage + '); background-size: ' + (imgNatural.w * 2) + 'px ' + (imgNatural.h * 2) + 'px; background-position: ' + pos.x + '% ' + pos.y + '%; border-radius: 1rem;'">
+                            </div>
+                        </template>
+                    </div>
+                </div>
+
+                <div class="absolute top-4 right-4 z-10">
+                    @livewire('wishlist-button', ['productId' => $product->id], key('wishlist-' . $product->id))
+                </div>
+                @if ($product->compare_price)
+                    <span class="absolute top-4 left-4 bg-red-500 text-white text-sm font-bold px-3 py-1.5 rounded-lg z-10">{{ __('SALE') }}</span>
                 @endif
+
+                <template x-teleport="body">
+                    <div x-show="lightbox"
+                         class="fixed inset-0 z-50 bg-black/95 flex items-center justify-center"
+                         x-cloak
+                         @keydown.escape.window="lightbox = false"
+                         @keydown.left.window="activeImg = activeImg > 0 ? activeImg - 1 : images.length - 1"
+                         @keydown.right.window="activeImg = activeImg < images.length - 1 ? activeImg + 1 : 0">
+
+                        <button @click="lightbox = false"
+                                class="absolute top-4 right-4 text-white/70 hover:text-white z-20 p-2 transition">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                        </button>
+
+                        <button @click="activeImg = activeImg > 0 ? activeImg - 1 : images.length - 1"
+                                class="absolute left-4 text-white/70 hover:text-white p-2 transition z-20">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                        </button>
+
+                        <img :src="currentImage"
+                             class="max-w-[90vw] max-h-[90vh] object-contain rounded-lg select-none">
+
+                        <button @click="activeImg = activeImg < images.length - 1 ? activeImg + 1 : 0"
+                                class="absolute right-4 text-white/70 hover:text-white p-2 transition z-20">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        </button>
+
+                        <div class="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/60 text-sm font-medium">
+                            <span x-text="activeImg + 1"></span> / <span x-text="images.length"></span>
+                        </div>
+                    </div>
+                </template>
             </div>
             <div class="md:pt-4">
                 @if ($product->brand)

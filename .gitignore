@@ -40,3 +40,4 @@ database/database.sqlite
 
 admin_test.html
 .vercel
+/storage/app/export_and_upload.php
