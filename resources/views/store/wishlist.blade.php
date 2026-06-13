@@ -31,14 +31,22 @@
                                     <span class="text-sm text-gray-400 line-through">${{ number_format($item->product->compare_price, 2) }}</span>
                                 @endif
                             </div>
-                            <form action="/cart/add/{{ $item->product->id }}" method="POST" class="mt-4">
-                                @csrf
-                                <button type="submit" class="w-full py-2.5 bg-gray-900 text-white text-sm font-semibold rounded-xl hover:bg-orange-600 transition flex items-center justify-center gap-2">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/></svg>
-                                    {{ __('Add to Cart') }}
-                                </button>
-                            </form>
-                            
+                            <div class="flex gap-3 mb-8">
+                                <form action="/cart/add/{{ $item->product->id }}" method="POST" class="flex-1">
+                                    @csrf
+                                    <button type="submit" class="w-full py-2.5 bg-gray-900 text-white text-sm font-semibold rounded-xl hover:bg-orange-600 transition flex items-center justify-center gap-2">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/></svg>
+                                        {{ __('Cart') }}
+                                    </button>
+                                </form>
+                                <form action="/buy-now/{{ $item->product->id }}" method="POST" class="flex-1">
+                                    @csrf
+                                    <button type="submit" class="w-full py-2.5 bg-orange-600 text-white text-sm font-semibold rounded-xl hover:bg-orange-700 transition flex items-center justify-center gap-2">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/></svg>
+                                        {{ __('Buy Now') }}
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 @endforeach
