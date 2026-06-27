@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Review extends Model
 {
     protected $fillable = [
-        'product_id', 'customer_name', 'customer_email',
+        'product_id', 'customer_id', 'customer_name', 'customer_email',
         'rating', 'comment', 'is_approved', 'parent_id',
     ];
 
@@ -24,6 +24,11 @@ class Review extends Model
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public function customer(): BelongsTo
+    {
+        return $this->belongsTo(Customer::class);
     }
 
     public function parent(): BelongsTo

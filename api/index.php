@@ -12,9 +12,7 @@ if (isset($_SERVER['VERCEL_REQUEST_URL'])) {
 $dbPath = '/tmp/database.sqlite';
 if (!file_exists($dbPath) && getenv('DB_CONNECTION') === 'sqlite') {
     $publicUrl = getenv('BLOB_PUBLIC_URL');
-    $storeId = getenv('BLOB_STORE_ID');
-    $token = getenv('BLOB_READ_WRITE_TOKEN');
-    $blobUrl = rtrim($publicUrl ?: '', '/') . '/' . ($storeId ?: '') . '/moto-house-blob';
+    $blobUrl = rtrim($publicUrl ?: '', '/') . '/' . 'moto-house-blob';
 
     if (filter_var($blobUrl, FILTER_VALIDATE_URL)) {
         $ch = curl_init($blobUrl);

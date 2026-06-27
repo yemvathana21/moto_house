@@ -38,7 +38,7 @@ class VercelBlobAdapter implements FilesystemAdapter
 
     public function getUrl(string $path): string
     {
-        return rtrim($this->publicUrl, '/') . '/' . $this->storeId . '/' . ltrim($path, '/');
+        return rtrim($this->publicUrl, '/') . '/' . ltrim($path, '/');
     }
 
     public function fileExists(string $path): bool
