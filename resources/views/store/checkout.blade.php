@@ -278,12 +278,12 @@
                 get finalTotal() {
                     return Math.max(0, this.subtotal + this.tax - this.discount);
                 },
+                @auth
                 init() {
-                    if ({{ auth()->check() ? 'true' : 'false' }}) {
-                        this.form.name = '{{ auth()->user()->name }}';
-                        this.form.email = '{{ auth()->user()->email }}';
-                    }
+                    this.form.name = '{{ auth()->user()->name }}';
+                    this.form.email = '{{ auth()->user()->email }}';
                 },
+                @endauth
                 goTo(index) {
                     if (this.completedSteps.includes(index) || index === this.currentStep + 1 && this.completedSteps.includes(this.currentStep)) {
                         this.currentStep = index;
