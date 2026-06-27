@@ -77,4 +77,19 @@ require __DIR__.'/../vendor/autoload.php';
 
 $app = require_once __DIR__.'/../bootstrap/app.php';
 
+// Auto-run pending migrations on SQLite (Vercel cold start may have stale blob)
+if (getenv('DB_CONNECTION') === 'sqlite' && ! $app->isDownForMaintenance()) {
+    try {
+        $kernel = $app->make(\Illuminate\Contracts\Console\Kernel::class);
+        $kernel->call('migrate', ['--force' => true]);
+        // PermissionSeeder is idempotent (firstOrCreate) — safe to re-run
+        $kernel->call('db:seed', ['--class' => 'Database\Seeders\PermissionSeeder', '--force' => true]);
+    } catch (\Throwable $e) {
+        // Don't block the request if migrations fail; log and continue
+        if (function_exists('logger')) {
+            logger()->error('Cold-start migration failed: ' . $e->getMessage());
+        }
+    }
+}
+
 $app->handleRequest(Request::capture());
