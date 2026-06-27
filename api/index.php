@@ -11,12 +11,28 @@ if (isset($_SERVER['VERCEL_REQUEST_URL'])) {
 // Restore SQLite database from Vercel Blob if not already in /tmp/
 $dbPath = '/tmp/database.sqlite';
 if (!file_exists($dbPath) && getenv('DB_CONNECTION') === 'sqlite') {
-    $publicUrl = getenv('BLOB_PUBLIC_URL');
     $storeId = getenv('BLOB_STORE_ID');
-    $blobUrl = rtrim($publicUrl ?: '', '/') . '/' . ($storeId ?: '') . '/moto-house-blob';
+    $token = getenv('BLOB_READ_WRITE_TOKEN');
+    $publicUrl = getenv('BLOB_PUBLIC_URL');
 
-    if (filter_var($blobUrl, FILTER_VALIDATE_URL)) {
-        $ch = curl_init($blobUrl);
+    // Use the API endpoint with auth token for reliable download
+    if ($storeId && $token) {
+        $ch = curl_init("https://blob.vercel-storage.com/$storeId/moto-house-blob");
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_TIMEOUT => 15,
+            CURLOPT_HTTPHEADER => ["Authorization: Bearer $token"],
+        ]);
+        $content = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+        if ($httpCode === 200 && $content !== false) {
+            file_put_contents($dbPath, $content);
+        }
+    } elseif ($publicUrl && filter_var($publicUrl, FILTER_VALIDATE_URL)) {
+        // Fallback: use public URL directly
+        $ch = curl_init($publicUrl);
         curl_setopt_array($ch, [
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_FOLLOWLOCATION => true,
