@@ -292,16 +292,8 @@
                 couponMessage: '',
                 couponValid: false,
                 discount: 0,
-                subtotal: {
-                    {
-                        $subtotal
-                    }
-                },
-                tax: {
-                    {
-                        $tax
-                    }
-                },
+                subtotal: {{ $subtotal }},
+                tax: {{ $tax }},
                 get finalTotal() {
                     return Math.max(0, this.subtotal + this.tax - this.discount);
                 },
