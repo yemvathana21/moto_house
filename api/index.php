@@ -12,7 +12,8 @@ if (isset($_SERVER['VERCEL_REQUEST_URL'])) {
 $dbPath = '/tmp/database.sqlite';
 if (!file_exists($dbPath) && getenv('DB_CONNECTION') === 'sqlite') {
     $publicUrl = getenv('BLOB_PUBLIC_URL');
-    $blobUrl = rtrim($publicUrl ?: '', '/') . '/' . 'moto-house-blob';
+    $storeId = getenv('BLOB_STORE_ID');
+    $blobUrl = rtrim($publicUrl ?: '', '/') . '/' . ($storeId ?: '') . '/moto-house-blob';
 
     if (filter_var($blobUrl, FILTER_VALIDATE_URL)) {
         $ch = curl_init($blobUrl);
@@ -23,7 +24,6 @@ if (!file_exists($dbPath) && getenv('DB_CONNECTION') === 'sqlite') {
         ]);
         $content = curl_exec($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
 
         if ($httpCode === 200 && $content !== false) {
             file_put_contents($dbPath, $content);
