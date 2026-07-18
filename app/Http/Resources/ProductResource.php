@@ -25,6 +25,7 @@ class ProductResource extends JsonResource
             'specifications' => $this->specifications ?? [],
             'is_featured' => $this->is_featured,
             'avg_rating' => $this->avgRating(),
+            'rating_distribution' => $this->ratingDistribution(),
             'category' => new CategoryResource($this->whenLoaded('category')),
             'reviews' => ReviewResource::collection($this->whenLoaded('reviews')),
             'created_at' => $this->created_at,

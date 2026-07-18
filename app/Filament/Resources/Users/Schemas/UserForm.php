@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Users\Schemas;
 
 use Filament\Forms\Components\CheckboxList;
+use Filament\Forms\Components\FileUpload;
 use Filament\Schemas\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -41,6 +42,10 @@ class UserForm
                             ->preload()
                             ->options(fn () => Role::pluck('name', 'id')),
                     ]),
+                FileUpload::make('profile_photo')
+                    ->image()
+                    ->directory('profile-photos')
+                    ->columnSpanFull(),
             ]);
     }
 }

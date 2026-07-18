@@ -14,7 +14,7 @@ class Customer extends Authenticatable
 
     protected $fillable = [
         'name', 'email', 'phone', 'password', 'address', 'city', 'state',
-        'postal_code', 'country', 'is_vip', 'notes',
+        'postal_code', 'country', 'is_vip', 'notes', 'profile_photo',
     ];
 
     protected $hidden = [
@@ -42,5 +42,15 @@ class Customer extends Authenticatable
     public function reviews(): HasMany
     {
         return $this->hasMany(Review::class);
+    }
+
+    public function addresses(): HasMany
+    {
+        return $this->hasMany(Address::class);
+    }
+
+    public function vouchers(): HasMany
+    {
+        return $this->hasMany(CustomerVoucher::class);
     }
 }

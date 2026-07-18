@@ -51,6 +51,13 @@ class AuthController extends Controller
             ]);
         }
 
+        if (!$customer->profile_photo) {
+            $user = \App\Models\User::where('email', $customer->email)->first();
+            if ($user && $user->profile_photo) {
+                $customer->profile_photo = $user->profile_photo;
+            }
+        }
+
         $token = $customer->createToken('mobile')->plainTextToken;
 
         return response()->json([
@@ -68,6 +75,35 @@ class AuthController extends Controller
 
     public function user(Request $request)
     {
-        return response()->json($request->user());
+        $customer = $request->user();
+
+        if (!$customer->profile_photo) {
+            $user = \App\Models\User::where('email', $customer->email)->first();
+            if ($user && $user->profile_photo) {
+                $customer->profile_photo = $user->profile_photo;
+            }
+        }
+
+        return response()->json($customer);
+    }
+
+    public function changePassword(Request $request)
+    {
+        $data = $request->validate([
+            'current_password' => 'required|string',
+            'new_password' => 'required|string|min:6|confirmed',
+        ]);
+
+        $customer = $request->user();
+
+        if (!Hash::check($data['current_password'], $customer->password)) {
+            throw ValidationException::withMessages([
+                'current_password' => ['Current password is incorrect.'],
+            ]);
+        }
+
+        $customer->update(['password' => Hash::make($data['new_password'])]);
+
+        return response()->json(['message' => 'Password changed successfully.']);
     }
 }

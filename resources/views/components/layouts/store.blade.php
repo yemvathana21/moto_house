@@ -88,9 +88,13 @@
                     @auth
                         <div class="relative" x-data="{ open: false }">
                             <button @click="open = !open" class="flex items-center gap-2 px-3 py-2 rounded-xl text-gray-700 hover:text-orange-600 hover:bg-orange-50 transition">
-                                <div class="w-7 h-7 bg-orange-100 rounded-full flex items-center justify-center">
-                                    <span class="text-xs font-bold text-orange-600">{{ substr(auth()->user()->name, 0, 1) }}</span>
-                                </div>
+                                @if(auth()->user()->profile_photo)
+                                    <img src="{{ asset('storage/' . auth()->user()->profile_photo) }}" alt="{{ auth()->user()->name }}" class="w-7 h-7 rounded-full object-cover">
+                                @else
+                                    <div class="w-7 h-7 bg-orange-100 rounded-full flex items-center justify-center">
+                                        <span class="text-xs font-bold text-orange-600">{{ substr(auth()->user()->name, 0, 1) }}</span>
+                                    </div>
+                                @endif
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                             </button>
                             <div x-show="open" @click.away="open = false" class="absolute right-0 mt-2 w-52 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-50" x-cloak>

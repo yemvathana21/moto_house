@@ -118,6 +118,17 @@ class ProductController extends Controller
             'comment' => 'required|string|max:1000',
         ]);
 
+        $existingReview = Review::where('product_id', $product->id)
+            ->where('customer_id', $request->user()->id)
+            ->whereNull('parent_id')
+            ->exists();
+
+        if ($existingReview) {
+            return response()->json([
+                'message' => 'You have already reviewed this product.',
+            ], 422);
+        }
+
         $review = Review::create([
             'product_id' => $product->id,
             'customer_id' => $request->user()->id,
@@ -125,12 +136,42 @@ class ProductController extends Controller
             'customer_email' => $request->user()->email,
             'rating' => $data['rating'],
             'comment' => $data['comment'],
-            'is_approved' => false,
+            'is_approved' => true,
         ]);
 
         return response()->json([
             'review' => new ReviewResource($review),
-            'message' => 'Review submitted and pending approval.',
+            'message' => 'Review submitted successfully.',
+        ], 201);
+    }
+
+    public function replyToReview(Request $request, $slug, $reviewId)
+    {
+        $product = Product::where('slug', $slug)->firstOrFail();
+
+        $parentReview = Review::where('id', $reviewId)
+            ->where('product_id', $product->id)
+            ->whereNull('parent_id')
+            ->firstOrFail();
+
+        $data = $request->validate([
+            'comment' => 'required|string|max:1000',
+        ]);
+
+        $reply = Review::create([
+            'product_id' => $product->id,
+            'parent_id' => $parentReview->id,
+            'customer_id' => $request->user()->id,
+            'customer_name' => $request->user()->name,
+            'customer_email' => $request->user()->email,
+            'rating' => 0,
+            'comment' => $data['comment'],
+            'is_approved' => true,
+        ]);
+
+        return response()->json([
+            'review' => new ReviewResource($reply),
+            'message' => 'Reply posted successfully.',
         ], 201);
     }
 

@@ -1,9 +1,13 @@
 <x-layouts.store title="{{ __('My Account') }}">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div class="flex items-center gap-4 mb-8">
-            <div class="w-14 h-14 bg-orange-100 rounded-2xl flex items-center justify-center">
-                <span class="text-xl font-bold text-orange-600">{{ substr($user->name, 0, 1) }}</span>
-            </div>
+            @if($user->profile_photo)
+                <img src="{{ asset('storage/' . $user->profile_photo) }}" alt="{{ $user->name }}" class="w-14 h-14 rounded-2xl object-cover">
+            @else
+                <div class="w-14 h-14 bg-orange-100 rounded-2xl flex items-center justify-center">
+                    <span class="text-xl font-bold text-orange-600">{{ substr($user->name, 0, 1) }}</span>
+                </div>
+            @endif
             <div>
                 <h1 class="text-2xl font-bold text-gray-900">{{ __('My Account') }}</h1>
                 <p class="text-sm text-gray-500">{{ $user->email }}</p>

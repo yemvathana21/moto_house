@@ -26,6 +26,9 @@ class CouponsTable
                 TextColumn::make('value')
                     ->formatStateUsing(fn ($record) => $record->type === 'percentage' ? $record->value . '%' : '$' . number_format($record->value, 2))
                     ->sortable(),
+                TextColumn::make('description')
+                    ->limit(30)
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('used_count')
                     ->label('Used')
                     ->numeric()

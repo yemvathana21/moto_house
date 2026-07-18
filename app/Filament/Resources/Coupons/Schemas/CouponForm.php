@@ -35,6 +35,9 @@ class CouponForm
                     ->numeric()
                     ->prefix('$')
                     ->helperText('Minimum order subtotal required'),
+                TextInput::make('description')
+                    ->maxLength(255)
+                    ->helperText('Shown to customers when browsing vouchers'),
                 TextInput::make('max_uses')
                     ->numeric()
                     ->label('Max Uses')

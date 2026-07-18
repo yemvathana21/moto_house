@@ -59,7 +59,31 @@ class Product extends Model
 
     public function avgRating(): float
     {
-        return round($this->reviews()->approved()->avg('rating') ?? 0, 1);
+        return round($this->reviews()->approved()->parentOnly()->avg('rating') ?? 0, 1);
+    }
+
+    public function ratingDistribution(): array
+    {
+        $counts = $this->reviews()->approved()->parentOnly()
+            ->selectRaw('rating, count(*) as count')
+            ->groupBy('rating')
+            ->pluck('count', 'rating')
+            ->toArray();
+
+        $total = array_sum($counts);
+        $distribution = [];
+        for ($i = 5; $i >= 1; $i--) {
+            $distribution[$i] = [
+                'count' => $counts[$i] ?? 0,
+                'percentage' => $total > 0 ? round((($counts[$i] ?? 0) / $total) * 100, 1) : 0,
+            ];
+        }
+
+        return [
+            'average' => $this->avgRating(),
+            'total' => $total,
+            'distribution' => $distribution,
+        ];
     }
 
     public function isInStock(): bool

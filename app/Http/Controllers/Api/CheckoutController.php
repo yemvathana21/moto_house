@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\OrderStatusHistory;
 use App\Models\Product;
 use App\Models\Coupon;
 use App\Models\Customer;
@@ -62,21 +63,26 @@ class CheckoutController extends Controller
 
         $tax = round($subtotal * 0.1, 2);
         $discount = 0;
+        $couponId = null;
+        $couponCode = null;
 
         if (!empty($data['coupon_code'])) {
             $coupon = Coupon::where('code', strtoupper($data['coupon_code']))->first();
             if ($coupon && $coupon->isValid()) {
                 $discount = $coupon->apply($subtotal);
-                $coupon->markUsed();
+                $couponId = $coupon->id;
+                $couponCode = $coupon->code;
             }
         }
 
         $total = $subtotal + $tax - $discount;
 
-        $order = DB::transaction(function () use ($data, $customer, $products, $subtotal, $tax, $discount, $total) {
+        $order = DB::transaction(function () use ($data, $customer, $products, $subtotal, $tax, $discount, $total, $couponId, $couponCode, $coupon) {
             $order = Order::create([
                 'order_number' => Order::generateOrderNumber(),
                 'customer_id' => $customer->id,
+                'coupon_id' => $couponId,
+                'coupon_code' => $couponCode,
                 'status' => 'pending',
                 'subtotal' => $subtotal,
                 'tax' => $tax,
@@ -106,8 +112,21 @@ class CheckoutController extends Controller
                 $product->decrement('stock_quantity', $item['quantity']);
             }
 
+            if ($coupon) {
+                $coupon->markUsed();
+                \App\Models\CustomerVoucher::where('customer_id', $customer->id)
+                    ->where('coupon_id', $coupon->id)
+                    ->update(['is_used' => true, 'used_at' => now()]);
+            }
+
             return $order;
         });
+
+        OrderStatusHistory::create([
+            'order_id' => $order->id,
+            'status' => 'pending',
+            'note' => 'Order placed',
+        ]);
 
         return response()->json([
             'order' => new OrderResource($order->load('items')),

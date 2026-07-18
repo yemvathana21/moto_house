@@ -4,11 +4,12 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Coupon extends Model
 {
     protected $fillable = [
-        'code', 'type', 'value', 'min_order_amount',
+        'code', 'type', 'value', 'min_order_amount', 'description',
         'max_uses', 'used_count', 'starts_at', 'expires_at', 'is_active',
     ];
 
@@ -48,5 +49,22 @@ class Coupon extends Model
     public function markUsed(): void
     {
         $this->increment('used_count');
+    }
+
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function collectedBy(): HasMany
+    {
+        return $this->hasMany(CustomerVoucher::class);
+    }
+
+    public function discountLabel(): string
+    {
+        return $this->type === 'percentage'
+            ? number_format($this->value, 0) . '% OFF'
+            : '$' . number_format($this->value, 2) . ' OFF';
     }
 }

@@ -9,7 +9,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Order extends Model
 {
     protected $fillable = [
-        'order_number', 'customer_id', 'status', 'subtotal', 'tax',
+        'order_number', 'customer_id', 'coupon_id', 'coupon_code',
+        'status', 'subtotal', 'tax',
         'shipping', 'discount', 'total', 'notes',
         'shipping_address', 'shipping_city', 'shipping_state',
         'shipping_postal_code', 'shipping_country',
@@ -33,9 +34,19 @@ class Order extends Model
         return $this->belongsTo(Customer::class);
     }
 
+    public function coupon(): BelongsTo
+    {
+        return $this->belongsTo(Coupon::class);
+    }
+
     public function items(): HasMany
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    public function statusHistory(): HasMany
+    {
+        return $this->hasMany(OrderStatusHistory::class)->latest();
     }
 
     public static function generateOrderNumber(): string

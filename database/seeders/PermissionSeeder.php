@@ -52,7 +52,7 @@ class PermissionSeeder extends Seeder
             'view_any_review', 'view_review',
         ]);
 
-        $user = \App\Models\User::where('email', 'admin@motohouse.com')->first();
+        $user = \App\Models\User::where('email', 'admin@gmail.com')->first();
         if ($user) {
             $user->assignRole('super_admin');
         }

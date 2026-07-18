@@ -12,7 +12,7 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         $orders = $request->user()->orders()
-            ->with('items')
+            ->with(['items', 'statusHistory'])
             ->latest()
             ->paginate(10);
 
@@ -29,7 +29,7 @@ class OrderController extends Controller
     public function show(Request $request, $id)
     {
         $order = $request->user()->orders()
-            ->with('items')
+            ->with(['items', 'statusHistory'])
             ->findOrFail($id);
 
         return response()->json([
@@ -44,7 +44,7 @@ class OrderController extends Controller
         ]);
 
         $order = Order::where('order_number', $data['order_number'])
-            ->with('items')
+            ->with(['items', 'statusHistory'])
             ->first();
 
         if (!$order) {
